@@ -1,0 +1,22 @@
+syntax = "proto3";
+package medium;
+
+service Medium {
+  rpc connect(Empty) returns (Start){}
+  rpc sync(stream Allocation) returns (Empty) {}
+  rpc shutdown(Empty) returns (Empty){}
+}
+
+message Start {
+  int32 idx = 1;
+}
+
+message Allocation {
+
+  int32 idx = 1;
+  bytes allocation = 2;
+}
+
+message Empty {
+
+}
