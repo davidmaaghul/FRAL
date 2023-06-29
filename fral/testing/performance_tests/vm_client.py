@@ -86,10 +86,11 @@ class VM(object):
             stderr=STDOUT,
         )
 
+        #Todo: add this to config
         await self.cmd([f"cd {self._working_directory}",
                         f"git checkout -f {self._working_branch}",
                         f"git pull",
-                        'export PYTHONPATH="${PYTHONPATH}:' + f'{self._working_directory}/src"'
+                        'export PYTHONPATH="${PYTHONPATH}:' + f'{self._working_directory}/fral"'
                         ])
 
         return self

@@ -1,56 +1,51 @@
 #ifndef FRAL_ENGINE_H
 #define FRAL_ENGINE_H
 
-#include <boost/interprocess/mapped_region.hpp>
 #include <atomic>
+#include <boost/interprocess/mapped_region.hpp>
 
 struct Map {
-    std::atomic<size_t> heapStart;
-    std::atomic<size_t> heapNext;
-    std::atomic<size_t> indexNext;
-    std::atomic<size_t> records[0];
+  std::atomic<size_t> heapStart;
+  std::atomic<size_t> heapNext;
+  std::atomic<size_t> indexNext;
+  std::atomic<size_t> records[0];
 };
 
 namespace fral {
 
-    class FRAL {
+class FRAL {
+ public:
+  FRAL(const char* fileName, size_t size, size_t maxEntries);
 
-    public:
+  explicit FRAL(const char* fileName);
 
-        FRAL(const char *fileName, size_t size, size_t maxEntries);
+  void* allocate(size_t sz);
 
-        explicit FRAL(const char *fileName);
+  int append(void* blob);
 
-        void *allocate(size_t sz);
+  void* load(int idx);
 
-        int append(void *blob);
+  static size_t getBlobSize(void* blob);
 
-        void *load(int idx);
+  int size();
 
-        static size_t getBlobSize(void *blob);
+  size_t getMaxEntries() const;
 
-        int size();
+  void primeCache();
 
-        size_t getMaxEntries() const;
+ private:
+  boost::interprocess::mapped_region* mappedRegion{};
 
-        void primeCache();
+  size_t maxEntries;
 
+  Map* map{};
 
-    private:
+  const char* fileName;
 
-        boost::interprocess::mapped_region *mappedRegion{};
+  void createFile(long long size);
 
-        size_t maxEntries;
+  void createMMRegion();
+};
+}  // namespace fral
 
-        Map *map{};
-
-        const char *fileName;
-
-        void createFile(long long size);
-
-        void createMMRegion();
-    };
-}
-
-
-#endif //FRAL_ENGINE_H
+#endif  // FRAL_ENGINE_H

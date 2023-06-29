@@ -9,4 +9,4 @@ client \
 server \
 fral_ext \
 pc_test -j 4
-mv cmake-build-release/src/python/*.so fral/python/fral
+mv cmake-build-release/fral/python/*.so fral/python/fral
