@@ -24,7 +24,7 @@ def spawn_test(blob_size: int, csv_name: str, bin_name: str):
 
 def main():
     print("Starting write test...")
-    if not os.path.exists(results := os.path.join(TEST_PATH, "test-results")):
+    if not os.path.exists(results := os.path.join(TEST_PATH, "test-results", "local")):
         os.mkdir(results)
     output_df = pd.DataFrame()
     for blob_size in BLOB_SIZES:

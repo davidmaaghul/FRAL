@@ -22,6 +22,7 @@ int main(int argc, char **argv) {
     if(pid==0){
         std::cout << "Starting Client" << std::endl;
         fral::FRAL ralC(FLAGS_bin_name.c_str());
+        ralC.primeCache();
         testClient client(&ralC, FLAGS_port, "localhost");
         client.sync(entries);
         auto exitCode = client.shutdown();
@@ -32,6 +33,7 @@ int main(int argc, char **argv) {
 
     char stream[FLAGS_size];
     fral::FRAL ralW(FLAGS_bin_name.c_str());
+    ralW.primeCache();
     std::cout << "Starting Writer" << std::endl;
     ((netMessage *) stream)->writeT = high_resolution_clock::now();
     for(int i = 0; i < entries; i++) {

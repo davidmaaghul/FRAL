@@ -32,7 +32,8 @@ nb::class_<fral::FRAL>(m, "FRAL")
 .def(nb::init<const char *>(), nb::rv_policy::reference)
 .def("allocate", &fral::FRAL::allocate)
 .def("append", &fral::FRAL::append)
-.def("load", &fral::FRAL::load);
+.def("load", &fral::FRAL::load)
+.def("prime_cache", &fral::FRAL::primeCache);
 
 nb::class_<Bytes>(m, "Bytes")
 .def(nb::init<void *>())

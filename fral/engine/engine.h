@@ -33,9 +33,12 @@ namespace fral {
 
         size_t getMaxEntries() const;
 
-        boost::interprocess::mapped_region *mappedRegion{};
+        void primeCache();
+
 
     private:
+
+        boost::interprocess::mapped_region *mappedRegion{};
 
         size_t maxEntries;
 

@@ -19,7 +19,7 @@ int main(int argc, char** argv){
     auto entries = create(FLAGS_size, FLAGS_bin_name, FLAGS_gib);
 
     fral::FRAL ral(FLAGS_bin_name.c_str());
-
+    ral.primeCache();
     char stream[FLAGS_size];
 
     auto start = high_resolution_clock::now();

@@ -26,6 +26,7 @@ int main(int argc, char** argv){
         pid = fork();
         if(pid == 0){
             auto ral = fral::FRAL(FLAGS_bin_name.c_str());
+            ral.primeCache();
             //reader
             if(process == 0){
                 std::cout << "Starting Reader" << std::endl;

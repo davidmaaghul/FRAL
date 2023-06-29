@@ -29,6 +29,14 @@ namespace fral {
         maxEntries = (map->heapStart - sizeof(Map)) / sizeof(size_t);
     }
 
+    void FRAL::primeCache(){
+        const size_t pageSize = mappedRegion->get_page_size();
+        auto startAddress = (char *) map;
+        auto endAddress = startAddress + mappedRegion->get_size();
+        for(auto address = startAddress; address < endAddress; address += pageSize){
+            volatile char value = *address;
+        }
+    }
 
     void FRAL::createFile(long long size) {
         boost::interprocess::file_mapping::remove(fileName);

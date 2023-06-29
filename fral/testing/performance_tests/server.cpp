@@ -32,7 +32,7 @@ int main(int argc, char **argv){
     if(pid == 0){
         char buffer[FLAGS_size];
         auto ralR = fral::FRAL(FLAGS_bin_name.c_str());
-
+        ralR.primeCache();
         for(int i = 0; i < entries;){
             auto blob = ralR.load(i);
             if(blob){
@@ -59,6 +59,7 @@ int main(int argc, char **argv){
     }
 
     auto ralS = fral::FRAL(FLAGS_bin_name.c_str());
+    ralS.primeCache();
     auto receiver = new testServer(&ralS, FLAGS_port, HOST, entries);
     std::thread listen(&listener, receiver);
     receiver->run();
