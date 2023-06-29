@@ -45,8 +45,6 @@ async def main():
 
     vm_results_path = f'{TEST_PATH}/test-results'
 
-    os.system(f'git commit -am "autocommit"; git push origin {wb}')
-
     if not os.path.exists(local_files := f'{vm_results_path}/vm'):
         os.makedirs(local_files)
 
