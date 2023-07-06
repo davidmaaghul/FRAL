@@ -11,6 +11,7 @@ from fral.testing.performance_tests import (
 
 
 def main():
+
     if not os.path.exists(
         results_path := os.path.join(
             TEST_PATH, "test-results"
@@ -20,9 +21,6 @@ def main():
 
     args = get_args()
 
-    if args.py_test:
-        py_test.main()
-
     if args.net_test:
         net_test.main()
 
@@ -31,6 +29,9 @@ def main():
 
     if args.pc_test:
         pc_test.main()
+
+    if args.py_test:
+        py_test.main()
 
 
 def get_args():

@@ -12,7 +12,6 @@ DEFINE_int32(size, 100, "Enter size of entries");
 
 
 int main(int argc, char **argv) {
-
     gflags::ParseCommandLineFlags(&argc, &argv, false);
 
     auto entries = create(FLAGS_size, FLAGS_bin_name, FLAGS_gib, FLAGS_entries);
