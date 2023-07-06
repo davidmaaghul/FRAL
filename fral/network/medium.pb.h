@@ -335,7 +335,6 @@ class Allocation final :
 
   enum : int {
     kAllocationFieldNumber = 2,
-    kIdxFieldNumber = 1,
   };
   // bytes allocation = 2;
   void clear_allocation();
@@ -351,15 +350,6 @@ class Allocation final :
   std::string* _internal_mutable_allocation();
   public:
 
-  // int32 idx = 1;
-  void clear_idx();
-  int32_t idx() const;
-  void set_idx(int32_t value);
-  private:
-  int32_t _internal_idx() const;
-  void _internal_set_idx(int32_t value);
-  public:
-
   // @@protoc_insertion_point(class_scope:medium.Allocation)
  private:
   class _Internal;
@@ -369,7 +359,6 @@ class Allocation final :
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr allocation_;
-    int32_t idx_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -527,26 +516,6 @@ inline void Start::set_idx(int32_t value) {
 // -------------------------------------------------------------------
 
 // Allocation
-
-// int32 idx = 1;
-inline void Allocation::clear_idx() {
-  _impl_.idx_ = 0;
-}
-inline int32_t Allocation::_internal_idx() const {
-  return _impl_.idx_;
-}
-inline int32_t Allocation::idx() const {
-  // @@protoc_insertion_point(field_get:medium.Allocation.idx)
-  return _internal_idx();
-}
-inline void Allocation::_internal_set_idx(int32_t value) {
-  
-  _impl_.idx_ = value;
-}
-inline void Allocation::set_idx(int32_t value) {
-  _internal_set_idx(value);
-  // @@protoc_insertion_point(field_set:medium.Allocation.idx)
-}
 
 // bytes allocation = 2;
 inline void Allocation::clear_allocation() {

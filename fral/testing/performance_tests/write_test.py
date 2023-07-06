@@ -24,8 +24,6 @@ def spawn_test(blob_size: int, csv_name: str, bin_name: str):
 
 def main():
     print("Starting write test...")
-    if not os.path.exists(results := os.path.join(TEST_PATH, "test-results", "local")):
-        os.mkdir(results)
     output_df = pd.DataFrame()
     for blob_size in BLOB_SIZES:
         print(f"Starting write test for blob_size={blob_size}")
@@ -36,9 +34,7 @@ def main():
             sub_df = pd.read_csv(csv_name)
             output_df = pd.concat([output_df, sub_df])
 
-    output_df.to_csv(os.path.join(TEST_PATH, "test-results", "local", "write_test.csv"),
-                     index=False,
-                     compression='gzip')
+    output_df.to_csv(os.path.join(TEST_PATH, "test-results", "write_test.csv"), index=False)
     print("Write test complete")
 
 

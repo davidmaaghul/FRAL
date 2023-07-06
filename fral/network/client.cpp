@@ -48,13 +48,12 @@ namespace fral {
         while (nextIdx < end) {
             auto blob = ral->load(nextIdx);
             if (blob) {
-                nextIdx++;
-                alloc.set_idx(nextIdx);
                 alloc.set_allocation((char *) blob, fral::FRAL::getBlobSize(blob));
-                if (!stream->Write(alloc)) {
+                if (!stream->Write(alloc, grpc::WriteOptions().set_no_compression().set_buffer_hint())) {
                     std::cout << "Stream is closed" << std::endl;
                     return -1;
                 }
+                nextIdx++;
             }
         }
 

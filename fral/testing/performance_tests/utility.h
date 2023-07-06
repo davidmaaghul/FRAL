@@ -21,17 +21,4 @@ size_t create(int size, const std::string& name, int gib, int maxEntries = 0){
     return entries;
 }
 
-
-struct netMessage {
-    high_resolution_clock::time_point writeT;
-    high_resolution_clock::time_point sendT;
-    high_resolution_clock::time_point recT;
-    high_resolution_clock::time_point readT;
-};
-
-uint64_t convertTime(high_resolution_clock::time_point stamp){
-    auto curTime = stamp.time_since_epoch();
-    return duration_cast<nanoseconds>(curTime).count();
-}
-
 #endif//FRAL_TESTING_PERFORMANCE_TESTS_UTILITY_H

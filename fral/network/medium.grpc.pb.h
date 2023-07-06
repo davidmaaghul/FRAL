@@ -27,8 +27,6 @@
 
 namespace medium {
 
-// Todo: use case for not just returning success status?
-//
 class Medium final {
  public:
   static constexpr char const* service_full_name() {
@@ -37,8 +35,6 @@ class Medium final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    // We handshake and then stream
-    // Stream between indices since queue has max entries
     virtual ::grpc::Status connect(::grpc::ClientContext* context, const ::medium::Empty& request, ::medium::Start* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::medium::Start>> Asyncconnect(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::medium::Start>>(AsyncconnectRaw(context, request, cq));
@@ -65,8 +61,6 @@ class Medium final {
     class async_interface {
      public:
       virtual ~async_interface() {}
-      // We handshake and then stream
-      // Stream between indices since queue has max entries
       virtual void connect(::grpc::ClientContext* context, const ::medium::Empty* request, ::medium::Start* response, std::function<void(::grpc::Status)>) = 0;
       virtual void connect(::grpc::ClientContext* context, const ::medium::Empty* request, ::medium::Start* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void sync(::grpc::ClientContext* context, ::medium::Empty* response, ::grpc::ClientWriteReactor< ::medium::Allocation>* reactor) = 0;
@@ -147,8 +141,6 @@ class Medium final {
    public:
     Service();
     virtual ~Service();
-    // We handshake and then stream
-    // Stream between indices since queue has max entries
     virtual ::grpc::Status connect(::grpc::ServerContext* context, const ::medium::Empty* request, ::medium::Start* response);
     virtual ::grpc::Status sync(::grpc::ServerContext* context, ::grpc::ServerReader< ::medium::Allocation>* reader, ::medium::Empty* response);
     virtual ::grpc::Status shutdown(::grpc::ServerContext* context, const ::medium::Empty* request, ::medium::Empty* response);

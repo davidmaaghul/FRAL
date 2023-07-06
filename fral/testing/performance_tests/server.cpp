@@ -1,5 +1,5 @@
 #include "gflags/gflags.h"
-#include "test_server.h"
+#include "../../network/server.h"
 #include "utility.h"
 #include <fstream>
 #include <iostream>
@@ -18,7 +18,7 @@ DEFINE_string(bin_name, "testS.bin", "Provide bin name");
 DEFINE_string(port, "50051", "Provide port for listener");
 DEFINE_string(csv_name, "net-test.csv", "Provide csv name for test results");
 
-void listener(testServer *server){
+void listener(fral::server *server){
     server->listenForKill();
 }
 
@@ -29,8 +29,9 @@ int main(int argc, char **argv){
     auto entries = create(FLAGS_size, FLAGS_bin_name, FLAGS_gib, FLAGS_entries);
 
     auto pid = fork();
+
     if(pid == 0){
-        char buffer[FLAGS_size];
+        auto buffer = (char *) malloc(FLAGS_size);
         auto ralR = fral::FRAL(FLAGS_bin_name.c_str());
         ralR.primeCache();
         for(int i = 0; i < entries;){
@@ -40,27 +41,23 @@ int main(int argc, char **argv){
                 i++;
             }
         }
+
         auto stop = high_resolution_clock::now();
-        auto blob1 = (netMessage *) ralR.load(0);
-        auto blob2 = (netMessage *) buffer;
+        auto start = (high_resolution_clock::time_point *) ralR.load(0);
 
         std::ofstream csvFile(FLAGS_csv_name);
-        csvFile << "WriteT,SendT,RecT,ReadT,Entries,Size" << std::endl;
-        csvFile << convertTime(blob1->writeT) << ","
-                << convertTime(blob2->sendT) << ","
-                << convertTime(blob1->recT) << ","
-                << convertTime(stop) << ","
+        csvFile << "Time,Entries,Size" << std::endl;
+        csvFile << duration_cast<nanoseconds>(stop - *start).count()<< ","
                 << entries << ","
                 << FLAGS_size << std::endl;
         csvFile.close();
         std::cout << "Finished Reader" << std::endl;
         exit(0);
-
     }
 
     auto ralS = fral::FRAL(FLAGS_bin_name.c_str());
     ralS.primeCache();
-    auto receiver = new testServer(&ralS, FLAGS_port, HOST, entries);
+    auto receiver = new fral::server(&ralS, FLAGS_port, HOST);
     std::thread listen(&listener, receiver);
     receiver->run();
     listen.join();

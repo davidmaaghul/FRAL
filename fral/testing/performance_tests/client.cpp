@@ -1,6 +1,6 @@
 #include "gflags/gflags.h"
-#include "test_client.h"
 #include "utility.h"
+#include "../../network/client.h"
 #include <iostream>
 #include <sys/wait.h>
 
@@ -23,19 +23,19 @@ int main(int argc, char **argv) {
         std::cout << "Starting Client" << std::endl;
         fral::FRAL ralC(FLAGS_bin_name.c_str());
         ralC.primeCache();
-        testClient client(&ralC, FLAGS_port, "localhost");
+        fral::client client(&ralC, FLAGS_port, "localhost");
         client.sync(entries);
         auto exitCode = client.shutdown();
         std::cout << "Shut down server with exit code " << exitCode << std::endl;
         exit(0);
         }
-    sleep(5); // enough time for server to spin uip
 
-    char stream[FLAGS_size];
+    sleep(5); // enough time for server to spin uip
+    auto stream = (char *) malloc(FLAGS_size);
     fral::FRAL ralW(FLAGS_bin_name.c_str());
     ralW.primeCache();
     std::cout << "Starting Writer" << std::endl;
-    ((netMessage *) stream)->writeT = high_resolution_clock::now();
+    * (high_resolution_clock::time_point *) stream = high_resolution_clock::now();
     for(int i = 0; i < entries; i++) {
         auto blob = ralW.allocate(FLAGS_size);
         std::memcpy(blob, stream, FLAGS_size);

@@ -19,7 +19,7 @@ int main(int argc, char** argv){
     assert(entries % FLAGS_writers == 0);
     auto writerEntries = entries / FLAGS_writers;
 
-    char stream[FLAGS_size];
+    auto buffer = malloc(FLAGS_size);
     pid_t pid;
 
     for(int process = 0; process < FLAGS_writers + 1; process++){
@@ -30,7 +30,6 @@ int main(int argc, char** argv){
             //reader
             if(process == 0){
                 std::cout << "Starting Reader" << std::endl;
-                char buffer[FLAGS_size]; //buffer for reading
 
                 for(int i = 0; i < entries;){
                     auto blob = ral.load(i);
@@ -60,11 +59,11 @@ int main(int argc, char** argv){
                 std::cout << "Starting Writer " << process << std::endl;
                 sleep(3); // enough time to start all processes
 
-                *(high_resolution_clock::time_point *) stream = high_resolution_clock::now();
+                *(high_resolution_clock::time_point *) buffer = high_resolution_clock::now();
 
                 for(int i = 0; i < writerEntries; i++){
                     auto blob = ral.allocate(FLAGS_size);
-                    std::memcpy(blob, stream, FLAGS_size);
+                    std::memcpy(blob, buffer, FLAGS_size);
                     ral.append(blob);
                 }
                 std::cout << "Finished Writer " << process << std::endl;

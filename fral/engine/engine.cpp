@@ -74,14 +74,21 @@ void* FRAL::allocate(size_t sz) {
 }
 
 int FRAL::append(void* blob) {
+
   auto offset = (ssize_t)((char*)blob - (char*)map);
   auto empty_idx = EMPTY_IDX;
+
   for (auto index = map->indexNext.load(); index < maxEntries; index++) {
+
     if (map->records[index].compare_exchange_weak(empty_idx, offset)) {
+
       map->indexNext.store(index + 1);
+
       return index;
     }
+
     empty_idx = EMPTY_IDX;  // EMPTY_IDX was updated
+
   }
   return -1;
 }

@@ -12,8 +12,6 @@ message Start {
 }
 
 message Allocation {
-
-  int32 idx = 1;
   bytes allocation = 2;
 }
 

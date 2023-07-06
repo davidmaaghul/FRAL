@@ -37,7 +37,6 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 PROTOBUF_CONSTEXPR Allocation::Allocation(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.allocation_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.idx_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct AllocationDefaultTypeInternal {
   PROTOBUF_CONSTEXPR AllocationDefaultTypeInternal()
@@ -78,7 +77,6 @@ const uint32_t TableStruct_medium_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::medium::Allocation, _impl_.idx_),
   PROTOBUF_FIELD_OFFSET(::medium::Allocation, _impl_.allocation_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::medium::Empty, _internal_metadata_),
@@ -90,7 +88,7 @@ const uint32_t TableStruct_medium_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::medium::Start)},
   { 7, -1, -1, sizeof(::medium::Allocation)},
-  { 15, -1, -1, sizeof(::medium::Empty)},
+  { 14, -1, -1, sizeof(::medium::Empty)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -101,16 +99,15 @@ static const ::_pb::Message* const file_default_instances[] = {
 
 const char descriptor_table_protodef_medium_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\014medium.proto\022\006medium\"\024\n\005Start\022\013\n\003idx\030\001"
-  " \001(\005\"-\n\nAllocation\022\013\n\003idx\030\001 \001(\005\022\022\n\nalloc"
-  "ation\030\002 \001(\014\"\007\n\005Empty2\216\001\n\006Medium\022)\n\007conne"
-  "ct\022\r.medium.Empty\032\r.medium.Start\"\000\022-\n\004sy"
-  "nc\022\022.medium.Allocation\032\r.medium.Empty\"\000("
-  "\001\022*\n\010shutdown\022\r.medium.Empty\032\r.medium.Em"
-  "pty\"\000b\006proto3"
+  " \001(\005\" \n\nAllocation\022\022\n\nallocation\030\002 \001(\014\"\007"
+  "\n\005Empty2\216\001\n\006Medium\022)\n\007connect\022\r.medium.E"
+  "mpty\032\r.medium.Start\"\000\022-\n\004sync\022\022.medium.A"
+  "llocation\032\r.medium.Empty\"\000(\001\022*\n\010shutdown"
+  "\022\r.medium.Empty\032\r.medium.Empty\"\000b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_medium_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_medium_2eproto = {
-    false, false, 253, descriptor_table_protodef_medium_2eproto,
+    false, false, 240, descriptor_table_protodef_medium_2eproto,
     "medium.proto",
     &descriptor_table_medium_2eproto_once, nullptr, 0, 3,
     schemas, file_default_instances, TableStruct_medium_2eproto::offsets,
@@ -320,7 +317,6 @@ Allocation::Allocation(const Allocation& from)
   Allocation* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.allocation_){}
-    , decltype(_impl_.idx_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -332,7 +328,6 @@ Allocation::Allocation(const Allocation& from)
     _this->_impl_.allocation_.Set(from._internal_allocation(), 
       _this->GetArenaForAllocation());
   }
-  _this->_impl_.idx_ = from._impl_.idx_;
   // @@protoc_insertion_point(copy_constructor:medium.Allocation)
 }
 
@@ -342,7 +337,6 @@ inline void Allocation::SharedCtor(
   (void)is_message_owned;
   new (&_impl_) Impl_{
       decltype(_impl_.allocation_){}
-    , decltype(_impl_.idx_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
   _impl_.allocation_.InitDefault();
@@ -376,7 +370,6 @@ void Allocation::Clear() {
   (void) cached_has_bits;
 
   _impl_.allocation_.ClearToEmpty();
-  _impl_.idx_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -386,14 +379,6 @@ const char* Allocation::_InternalParse(const char* ptr, ::_pbi::ParseContext* ct
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // int32 idx = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          _impl_.idx_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
       // bytes allocation = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
@@ -432,12 +417,6 @@ uint8_t* Allocation::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 idx = 1;
-  if (this->_internal_idx() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(1, this->_internal_idx(), target);
-  }
-
   // bytes allocation = 2;
   if (!this->_internal_allocation().empty()) {
     target = stream->WriteBytesMaybeAliased(
@@ -467,11 +446,6 @@ size_t Allocation::ByteSizeLong() const {
         this->_internal_allocation());
   }
 
-  // int32 idx = 1;
-  if (this->_internal_idx() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_idx());
-  }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -492,9 +466,6 @@ void Allocation::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PRO
 
   if (!from._internal_allocation().empty()) {
     _this->_internal_set_allocation(from._internal_allocation());
-  }
-  if (from._internal_idx() != 0) {
-    _this->_internal_set_idx(from._internal_idx());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -519,7 +490,6 @@ void Allocation::InternalSwap(Allocation* other) {
       &_impl_.allocation_, lhs_arena,
       &other->_impl_.allocation_, rhs_arena
   );
-  swap(_impl_.idx_, other->_impl_.idx_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Allocation::GetMetadata() const {
