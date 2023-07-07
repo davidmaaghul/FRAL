@@ -14,13 +14,13 @@ DEFINE_int32(size, 100, "Enter size of entries");
 int main(int argc, char **argv) {
     gflags::ParseCommandLineFlags(&argc, &argv, false);
 
-    auto entries = create(FLAGS_size, FLAGS_bin_name, FLAGS_gib, FLAGS_entries);
+    auto entries = create<fral::FRAL2>(FLAGS_size, FLAGS_bin_name, FLAGS_gib, FLAGS_entries);
 
     auto pid = fork();
 
     if(pid==0){
         std::cout << "Starting Client" << std::endl;
-        fral::FRAL ralC(FLAGS_bin_name.c_str());
+        fral::FRAL2 ralC(FLAGS_bin_name.c_str());
         ralC.primeCache();
         fral::client client(&ralC, FLAGS_port, "localhost");
         client.sync(entries);
@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
 
     sleep(5); // enough time for server to spin uip
     auto stream = (char *) malloc(FLAGS_size);
-    fral::FRAL ralW(FLAGS_bin_name.c_str());
+    fral::FRAL2 ralW(FLAGS_bin_name.c_str());
     ralW.primeCache();
     std::cout << "Starting Writer" << std::endl;
     * (high_resolution_clock::time_point *) stream = high_resolution_clock::now();

@@ -16,11 +16,11 @@ int main(int argc, char** argv){
 
     gflags::ParseCommandLineFlags(&argc, &argv, false);
 
-    auto entries = create(FLAGS_size, FLAGS_bin_name, FLAGS_gib);
+    auto entries = create<fral::FRAL>(FLAGS_size, FLAGS_bin_name, FLAGS_gib);
 
     fral::FRAL ral(FLAGS_bin_name.c_str());
     ral.primeCache();
-    char stream[FLAGS_size];
+    auto stream = malloc(FLAGS_size);
 
     auto start = high_resolution_clock::now();
 

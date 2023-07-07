@@ -26,13 +26,13 @@ int main(int argc, char **argv){
 
     gflags::ParseCommandLineFlags(&argc, &argv, false);
 
-    auto entries = create(FLAGS_size, FLAGS_bin_name, FLAGS_gib, FLAGS_entries);
+    auto entries = create<fral::FRAL2>(FLAGS_size, FLAGS_bin_name, FLAGS_gib, FLAGS_entries);
 
     auto pid = fork();
 
     if(pid == 0){
         auto buffer = (char *) malloc(FLAGS_size);
-        auto ralR = fral::FRAL(FLAGS_bin_name.c_str());
+        auto ralR = fral::FRAL2(FLAGS_bin_name.c_str());
         ralR.primeCache();
         for(int i = 0; i < entries;){
             auto blob = ralR.load(i);
@@ -55,7 +55,7 @@ int main(int argc, char **argv){
         exit(0);
     }
 
-    auto ralS = fral::FRAL(FLAGS_bin_name.c_str());
+    auto ralS = fral::FRAL2(FLAGS_bin_name.c_str());
     ralS.primeCache();
     auto receiver = new fral::server(&ralS, FLAGS_port, HOST);
     std::thread listen(&listener, receiver);

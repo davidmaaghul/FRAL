@@ -2,7 +2,7 @@
 #define FRAL_SERVER_H
 
 #include "medium.grpc.pb.h"
-#include "../engine/engine.h"
+#include "../engine/engine2.h"
 #include <string>
 #include <thread>
 #include <condition_variable>
@@ -27,7 +27,7 @@ namespace fral {
     class server : public Medium::Service {
 
     public:
-        server(fral::FRAL *log, std::string &port, std::string &host);
+        server(fral::FRAL2 *log, std::string &port, std::string &host);
 
         Status connect(ServerContext *context, const Empty *hello, Start *start) override;
 
@@ -44,7 +44,7 @@ namespace fral {
     protected:
         void createServer();
 
-        fral::FRAL *ral;
+        fral::FRAL2 *ral;
 
         bool keepAlive = true;
 

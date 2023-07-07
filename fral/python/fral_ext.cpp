@@ -14,7 +14,7 @@ class memoryview : public nb::object {
 
 class Bytes {
 public:
-    Bytes(void * blob) : blob(blob), sz(fral::FRAL::getBlobSize(blob)) {}
+    Bytes(void * blob, size_t blobSize) : blob(blob), sz(blobSize) {}
     [[nodiscard]] memoryview read_bytes() const {return memoryview((char *) blob, sz);}
     void * blob;
     size_t sz;
@@ -36,7 +36,7 @@ nb::class_<fral::FRAL>(m, "FRAL")
 .def("prime_cache", &fral::FRAL::primeCache);
 
 nb::class_<Bytes>(m, "Bytes")
-.def(nb::init<void *>())
+.def(nb::init<void *, size_t>())
 .def("read", &Bytes::read_bytes, nb::rv_policy::reference);
 m.def("memoryview_to_pointer", &memoryview_to_pointer, nb::rv_policy::reference);
 

@@ -10,10 +10,9 @@ namespace fral {
 
 FRAL::FRAL(const char* fileName, size_t size, size_t maxEntries)
     : maxEntries(maxEntries), fileName(fileName) {
-  auto arraySize = maxEntries * sizeof(ssize_t);
-  auto storageSize = arraySize;
-  auto admin = sizeof(Map) + arraySize;
-  createFile(size + admin + storageSize);
+
+  auto admin = maxEntries * sizeof(ssize_t) + sizeof(Map);
+  createFile(size + admin);
   createMMRegion();
 
   map->heapStart.store(admin);
@@ -61,16 +60,15 @@ void* FRAL::allocate(size_t sz) {
     return nullptr;
   }
 
-  auto currentEntry = map->heapNext.fetch_add(sz + sizeof(size_t*));
+  auto currentEntry = map->heapNext.fetch_add(sz);
 
   if (currentEntry + sz > mappedRegion->get_size()) {
     return nullptr;
   }
 
   char* currentAddress = ((char*)map) + currentEntry;
-  *(size_t*)currentAddress = sz;
 
-  return currentAddress + sizeof(size_t*);
+  return currentAddress;
 }
 
 int FRAL::append(void* blob) {
@@ -100,12 +98,6 @@ void* FRAL::load(int idx) {
   return ((char*)map) + map->records[idx];
 }
 
-size_t FRAL::getBlobSize(void* blob) {
-  char* sizeAddress = (char*)blob - sizeof(size_t*);
-  return *(size_t*)sizeAddress;
-}
-
-size_t FRAL::getMaxEntries() const { return maxEntries; }
 
 int FRAL::size() {
   for (auto index = map->indexNext.load(); index < maxEntries; ++index) {

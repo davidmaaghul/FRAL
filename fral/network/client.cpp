@@ -14,7 +14,7 @@ using medium::Start;
 
 namespace fral {
 
-    client::client(fral::FRAL *ral, const std::string &port, const std::string &host) : ral(ral) {
+    client::client(fral::FRAL2 *ral, const std::string &port, const std::string &host) : ral(ral) {
         std::string loc = host + ":" + port;
         channel = grpc::CreateChannel(loc, grpc::InsecureChannelCredentials());
         stub = Medium::NewStub(channel);
@@ -48,7 +48,7 @@ namespace fral {
         while (nextIdx < end) {
             auto blob = ral->load(nextIdx);
             if (blob) {
-                alloc.set_allocation((char *) blob, fral::FRAL::getBlobSize(blob));
+                alloc.set_allocation((char *) blob, fral::FRAL2::getBlobSize(blob));
                 if (!stream->Write(alloc, grpc::WriteOptions().set_no_compression().set_buffer_hint())) {
                     std::cout << "Stream is closed" << std::endl;
                     return -1;

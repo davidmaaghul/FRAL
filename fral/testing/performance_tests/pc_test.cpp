@@ -14,7 +14,7 @@ int main(int argc, char** argv){
 
     gflags::ParseCommandLineFlags(&argc, &argv, false);
 
-    auto entries = create(FLAGS_size, FLAGS_bin_name, FLAGS_gib);
+    auto entries = create<fral::FRAL>(FLAGS_size, FLAGS_bin_name, FLAGS_gib);
 
     assert(entries % FLAGS_writers == 0);
     auto writerEntries = entries / FLAGS_writers;

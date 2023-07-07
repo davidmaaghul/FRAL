@@ -3,7 +3,7 @@
 
 #include <grpcpp/grpcpp.h>
 #include "medium.grpc.pb.h"
-#include "../engine/engine.h"
+#include "../engine/engine2.h"
 
 using grpc::Channel;
 using grpc::ClientContext;
@@ -16,7 +16,7 @@ namespace fral {
 
     class client {
     public:
-        client(fral::FRAL *log, const std::string &port, const std::string &host);
+        client(fral::FRAL2 *log, const std::string &port, const std::string &host);
 
         int connect();
 
@@ -31,7 +31,7 @@ namespace fral {
         std::string name;
         std::string host;
         std::string port;
-        fral::FRAL *ral;
+        fral::FRAL2 *ral;
     };
 
 }
