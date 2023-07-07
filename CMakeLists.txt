@@ -3,9 +3,6 @@ project(FRAL C CXX)
 set(CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
-
 find_package(Boost 1.57.0 COMPONENTS system filesystem program_options regex timer chrono REQUIRED)
 find_package(gflags 2.2.2 REQUIRED)
 find_package(Protobuf CONFIG REQUIRED)

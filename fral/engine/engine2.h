@@ -11,7 +11,7 @@ namespace fral {
 class FRAL2 : public FRAL {
  public:
   FRAL2(const char* fileName, size_t size, size_t maxEntries)
-      : FRAL(fileName, size + sizeof(size_t) * maxEntries, maxEntries) {}
+      : FRAL(fileName, size + sizeof(ssize_t) * maxEntries, maxEntries) {}
 
   explicit FRAL2(const char* fileName) : FRAL(fileName) {}
 

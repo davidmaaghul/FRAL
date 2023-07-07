@@ -25,7 +25,7 @@ FRAL::FRAL(const char* fileName, size_t size, size_t maxEntries)
 
 FRAL::FRAL(const char* fileName) : fileName(fileName) {
   createMMRegion();
-  maxEntries = (map->heapStart - sizeof(Map)) / sizeof(size_t);
+  maxEntries = (map->heapStart - sizeof(Map)) / sizeof(ssize_t);
 }
 
 void FRAL::primeCache() {
@@ -65,7 +65,7 @@ void* FRAL::allocate(size_t sz) {
     return nullptr;
   }
 
-  char* currentAddress = ((char*)map) + currentEntry;
+  auto currentAddress = ((char*)map) + currentEntry;
 
   return currentAddress;
 }
