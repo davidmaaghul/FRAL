@@ -15,21 +15,21 @@ namespace fral {
 
 class FRAL {
  public:
-    FRAL(const char *fileName, size_t size, size_t maxEntries);
+  FRAL(const char* fileName, size_t size, size_t maxEntries);
 
-    FRAL(const char* fileName);
+  FRAL(const char* fileName);
 
-    virtual void* allocate(size_t sz);
+  virtual void* allocate(size_t sz);
 
-    int append(void* blob);
+  int append(void* blob);
 
-    void* load(int idx);
+  void* load(int idx);
 
-    int size();
+  int size();
 
-    void primeCache();
+  void primeCache();
 
-protected:
+ protected:
   boost::interprocess::mapped_region* mappedRegion{};
 
   size_t maxEntries;

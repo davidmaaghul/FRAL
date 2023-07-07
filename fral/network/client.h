@@ -2,39 +2,38 @@
 #define FRAL_CLIENT_H
 
 #include <grpcpp/grpcpp.h>
-#include "medium.grpc.pb.h"
+
 #include "../engine/engine2.h"
+#include "medium.grpc.pb.h"
 
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
 
-using medium::Medium;
 using medium::Allocation;
+using medium::Medium;
 
 namespace fral {
 
-    class client {
-    public:
-        client(fral::FRAL2 *log, const std::string &port, const std::string &host);
+class client {
+ public:
+  client(fral::FRAL2 *log, const std::string &port, const std::string &host);
 
-        int connect();
+  int connect();
 
-        virtual int sync(const int &end);
+  virtual int sync(const int &end);
 
-        int shutdown();
+  int shutdown();
 
-    protected:
+ protected:
+  std::unique_ptr<Medium::Stub> stub;
+  std::shared_ptr<Channel> channel;
+  std::string name;
+  std::string host;
+  std::string port;
+  fral::FRAL2 *ral;
+};
 
-        std::unique_ptr <Medium::Stub> stub;
-        std::shared_ptr <Channel> channel;
-        std::string name;
-        std::string host;
-        std::string port;
-        fral::FRAL2 *ral;
-    };
+}  // namespace fral
 
-}
-
-
-#endif //FRAL_CLIENT_H
+#endif  // FRAL_CLIENT_H

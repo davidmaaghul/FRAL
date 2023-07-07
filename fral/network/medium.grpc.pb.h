@@ -4,299 +4,490 @@
 #ifndef GRPC_medium_2eproto__INCLUDED
 #define GRPC_medium_2eproto__INCLUDED
 
-#include "medium.pb.h"
-
-#include <functional>
+#include <grpcpp/client_context.h>
+#include <grpcpp/completion_queue.h>
 #include <grpcpp/generic/async_generic_service.h>
+#include <grpcpp/impl/proto_utils.h>
+#include <grpcpp/impl/rpc_method.h>
+#include <grpcpp/impl/server_callback_handlers.h>
+#include <grpcpp/impl/service_type.h>
+#include <grpcpp/server_context.h>
 #include <grpcpp/support/async_stream.h>
 #include <grpcpp/support/async_unary_call.h>
 #include <grpcpp/support/client_callback.h>
-#include <grpcpp/client_context.h>
-#include <grpcpp/completion_queue.h>
 #include <grpcpp/support/message_allocator.h>
 #include <grpcpp/support/method_handler.h>
-#include <grpcpp/impl/proto_utils.h>
-#include <grpcpp/impl/rpc_method.h>
 #include <grpcpp/support/server_callback.h>
-#include <grpcpp/impl/server_callback_handlers.h>
-#include <grpcpp/server_context.h>
-#include <grpcpp/impl/service_type.h>
 #include <grpcpp/support/status.h>
 #include <grpcpp/support/stub_options.h>
 #include <grpcpp/support/sync_stream.h>
+
+#include <functional>
+
+#include "medium.pb.h"
 
 namespace medium {
 
 class Medium final {
  public:
-  static constexpr char const* service_full_name() {
-    return "medium.Medium";
-  }
+  static constexpr char const* service_full_name() { return "medium.Medium"; }
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    virtual ::grpc::Status connect(::grpc::ClientContext* context, const ::medium::Empty& request, ::medium::Start* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::medium::Start>> Asyncconnect(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::medium::Start>>(AsyncconnectRaw(context, request, cq));
+    virtual ::grpc::Status connect(::grpc::ClientContext* context,
+                                   const ::medium::Empty& request,
+                                   ::medium::Start* response) = 0;
+    std::unique_ptr<::grpc::ClientAsyncResponseReaderInterface<::medium::Start>>
+    Asyncconnect(::grpc::ClientContext* context, const ::medium::Empty& request,
+                 ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr<
+          ::grpc::ClientAsyncResponseReaderInterface<::medium::Start>>(
+          AsyncconnectRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::medium::Start>> PrepareAsyncconnect(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::medium::Start>>(PrepareAsyncconnectRaw(context, request, cq));
+    std::unique_ptr<::grpc::ClientAsyncResponseReaderInterface<::medium::Start>>
+    PrepareAsyncconnect(::grpc::ClientContext* context,
+                        const ::medium::Empty& request,
+                        ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr<
+          ::grpc::ClientAsyncResponseReaderInterface<::medium::Start>>(
+          PrepareAsyncconnectRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientWriterInterface< ::medium::Allocation>> sync(::grpc::ClientContext* context, ::medium::Empty* response) {
-      return std::unique_ptr< ::grpc::ClientWriterInterface< ::medium::Allocation>>(syncRaw(context, response));
+    std::unique_ptr<::grpc::ClientWriterInterface<::medium::Allocation>> sync(
+        ::grpc::ClientContext* context, ::medium::Empty* response) {
+      return std::unique_ptr<
+          ::grpc::ClientWriterInterface<::medium::Allocation>>(
+          syncRaw(context, response));
     }
-    std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::medium::Allocation>> Asyncsync(::grpc::ClientContext* context, ::medium::Empty* response, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::medium::Allocation>>(AsyncsyncRaw(context, response, cq, tag));
+    std::unique_ptr<::grpc::ClientAsyncWriterInterface<::medium::Allocation>>
+    Asyncsync(::grpc::ClientContext* context, ::medium::Empty* response,
+              ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr<
+          ::grpc::ClientAsyncWriterInterface<::medium::Allocation>>(
+          AsyncsyncRaw(context, response, cq, tag));
     }
-    std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::medium::Allocation>> PrepareAsyncsync(::grpc::ClientContext* context, ::medium::Empty* response, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::medium::Allocation>>(PrepareAsyncsyncRaw(context, response, cq));
+    std::unique_ptr<::grpc::ClientAsyncWriterInterface<::medium::Allocation>>
+    PrepareAsyncsync(::grpc::ClientContext* context, ::medium::Empty* response,
+                     ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr<
+          ::grpc::ClientAsyncWriterInterface<::medium::Allocation>>(
+          PrepareAsyncsyncRaw(context, response, cq));
     }
-    virtual ::grpc::Status shutdown(::grpc::ClientContext* context, const ::medium::Empty& request, ::medium::Empty* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::medium::Empty>> Asyncshutdown(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::medium::Empty>>(AsyncshutdownRaw(context, request, cq));
+    virtual ::grpc::Status shutdown(::grpc::ClientContext* context,
+                                    const ::medium::Empty& request,
+                                    ::medium::Empty* response) = 0;
+    std::unique_ptr<::grpc::ClientAsyncResponseReaderInterface<::medium::Empty>>
+    Asyncshutdown(::grpc::ClientContext* context,
+                  const ::medium::Empty& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr<
+          ::grpc::ClientAsyncResponseReaderInterface<::medium::Empty>>(
+          AsyncshutdownRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::medium::Empty>> PrepareAsyncshutdown(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::medium::Empty>>(PrepareAsyncshutdownRaw(context, request, cq));
+    std::unique_ptr<::grpc::ClientAsyncResponseReaderInterface<::medium::Empty>>
+    PrepareAsyncshutdown(::grpc::ClientContext* context,
+                         const ::medium::Empty& request,
+                         ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr<
+          ::grpc::ClientAsyncResponseReaderInterface<::medium::Empty>>(
+          PrepareAsyncshutdownRaw(context, request, cq));
     }
     class async_interface {
      public:
       virtual ~async_interface() {}
-      virtual void connect(::grpc::ClientContext* context, const ::medium::Empty* request, ::medium::Start* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void connect(::grpc::ClientContext* context, const ::medium::Empty* request, ::medium::Start* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void sync(::grpc::ClientContext* context, ::medium::Empty* response, ::grpc::ClientWriteReactor< ::medium::Allocation>* reactor) = 0;
-      virtual void shutdown(::grpc::ClientContext* context, const ::medium::Empty* request, ::medium::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void shutdown(::grpc::ClientContext* context, const ::medium::Empty* request, ::medium::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void connect(::grpc::ClientContext* context,
+                           const ::medium::Empty* request,
+                           ::medium::Start* response,
+                           std::function<void(::grpc::Status)>) = 0;
+      virtual void connect(::grpc::ClientContext* context,
+                           const ::medium::Empty* request,
+                           ::medium::Start* response,
+                           ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void sync(
+          ::grpc::ClientContext* context, ::medium::Empty* response,
+          ::grpc::ClientWriteReactor<::medium::Allocation>* reactor) = 0;
+      virtual void shutdown(::grpc::ClientContext* context,
+                            const ::medium::Empty* request,
+                            ::medium::Empty* response,
+                            std::function<void(::grpc::Status)>) = 0;
+      virtual void shutdown(::grpc::ClientContext* context,
+                            const ::medium::Empty* request,
+                            ::medium::Empty* response,
+                            ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
+
    private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::medium::Start>* AsyncconnectRaw(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::medium::Start>* PrepareAsyncconnectRaw(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientWriterInterface< ::medium::Allocation>* syncRaw(::grpc::ClientContext* context, ::medium::Empty* response) = 0;
-    virtual ::grpc::ClientAsyncWriterInterface< ::medium::Allocation>* AsyncsyncRaw(::grpc::ClientContext* context, ::medium::Empty* response, ::grpc::CompletionQueue* cq, void* tag) = 0;
-    virtual ::grpc::ClientAsyncWriterInterface< ::medium::Allocation>* PrepareAsyncsyncRaw(::grpc::ClientContext* context, ::medium::Empty* response, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::medium::Empty>* AsyncshutdownRaw(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::medium::Empty>* PrepareAsyncshutdownRaw(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface<::medium::Start>*
+    AsyncconnectRaw(::grpc::ClientContext* context,
+                    const ::medium::Empty& request,
+                    ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface<::medium::Start>*
+    PrepareAsyncconnectRaw(::grpc::ClientContext* context,
+                           const ::medium::Empty& request,
+                           ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientWriterInterface<::medium::Allocation>* syncRaw(
+        ::grpc::ClientContext* context, ::medium::Empty* response) = 0;
+    virtual ::grpc::ClientAsyncWriterInterface<::medium::Allocation>*
+    AsyncsyncRaw(::grpc::ClientContext* context, ::medium::Empty* response,
+                 ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncWriterInterface<::medium::Allocation>*
+    PrepareAsyncsyncRaw(::grpc::ClientContext* context,
+                        ::medium::Empty* response,
+                        ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface<::medium::Empty>*
+    AsyncshutdownRaw(::grpc::ClientContext* context,
+                     const ::medium::Empty& request,
+                     ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface<::medium::Empty>*
+    PrepareAsyncshutdownRaw(::grpc::ClientContext* context,
+                            const ::medium::Empty& request,
+                            ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
-    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
-    ::grpc::Status connect(::grpc::ClientContext* context, const ::medium::Empty& request, ::medium::Start* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::medium::Start>> Asyncconnect(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::medium::Start>>(AsyncconnectRaw(context, request, cq));
+    Stub(const std::shared_ptr<::grpc::ChannelInterface>& channel,
+         const ::grpc::StubOptions& options = ::grpc::StubOptions());
+    ::grpc::Status connect(::grpc::ClientContext* context,
+                           const ::medium::Empty& request,
+                           ::medium::Start* response) override;
+    std::unique_ptr<::grpc::ClientAsyncResponseReader<::medium::Start>>
+    Asyncconnect(::grpc::ClientContext* context, const ::medium::Empty& request,
+                 ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr<
+          ::grpc::ClientAsyncResponseReader<::medium::Start>>(
+          AsyncconnectRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::medium::Start>> PrepareAsyncconnect(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::medium::Start>>(PrepareAsyncconnectRaw(context, request, cq));
+    std::unique_ptr<::grpc::ClientAsyncResponseReader<::medium::Start>>
+    PrepareAsyncconnect(::grpc::ClientContext* context,
+                        const ::medium::Empty& request,
+                        ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr<
+          ::grpc::ClientAsyncResponseReader<::medium::Start>>(
+          PrepareAsyncconnectRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientWriter< ::medium::Allocation>> sync(::grpc::ClientContext* context, ::medium::Empty* response) {
-      return std::unique_ptr< ::grpc::ClientWriter< ::medium::Allocation>>(syncRaw(context, response));
+    std::unique_ptr<::grpc::ClientWriter<::medium::Allocation>> sync(
+        ::grpc::ClientContext* context, ::medium::Empty* response) {
+      return std::unique_ptr<::grpc::ClientWriter<::medium::Allocation>>(
+          syncRaw(context, response));
     }
-    std::unique_ptr< ::grpc::ClientAsyncWriter< ::medium::Allocation>> Asyncsync(::grpc::ClientContext* context, ::medium::Empty* response, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncWriter< ::medium::Allocation>>(AsyncsyncRaw(context, response, cq, tag));
+    std::unique_ptr<::grpc::ClientAsyncWriter<::medium::Allocation>> Asyncsync(
+        ::grpc::ClientContext* context, ::medium::Empty* response,
+        ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr<::grpc::ClientAsyncWriter<::medium::Allocation>>(
+          AsyncsyncRaw(context, response, cq, tag));
     }
-    std::unique_ptr< ::grpc::ClientAsyncWriter< ::medium::Allocation>> PrepareAsyncsync(::grpc::ClientContext* context, ::medium::Empty* response, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncWriter< ::medium::Allocation>>(PrepareAsyncsyncRaw(context, response, cq));
+    std::unique_ptr<::grpc::ClientAsyncWriter<::medium::Allocation>>
+    PrepareAsyncsync(::grpc::ClientContext* context, ::medium::Empty* response,
+                     ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr<::grpc::ClientAsyncWriter<::medium::Allocation>>(
+          PrepareAsyncsyncRaw(context, response, cq));
     }
-    ::grpc::Status shutdown(::grpc::ClientContext* context, const ::medium::Empty& request, ::medium::Empty* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::medium::Empty>> Asyncshutdown(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::medium::Empty>>(AsyncshutdownRaw(context, request, cq));
+    ::grpc::Status shutdown(::grpc::ClientContext* context,
+                            const ::medium::Empty& request,
+                            ::medium::Empty* response) override;
+    std::unique_ptr<::grpc::ClientAsyncResponseReader<::medium::Empty>>
+    Asyncshutdown(::grpc::ClientContext* context,
+                  const ::medium::Empty& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr<
+          ::grpc::ClientAsyncResponseReader<::medium::Empty>>(
+          AsyncshutdownRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::medium::Empty>> PrepareAsyncshutdown(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::medium::Empty>>(PrepareAsyncshutdownRaw(context, request, cq));
+    std::unique_ptr<::grpc::ClientAsyncResponseReader<::medium::Empty>>
+    PrepareAsyncshutdown(::grpc::ClientContext* context,
+                         const ::medium::Empty& request,
+                         ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr<
+          ::grpc::ClientAsyncResponseReader<::medium::Empty>>(
+          PrepareAsyncshutdownRaw(context, request, cq));
     }
-    class async final :
-      public StubInterface::async_interface {
+    class async final : public StubInterface::async_interface {
      public:
-      void connect(::grpc::ClientContext* context, const ::medium::Empty* request, ::medium::Start* response, std::function<void(::grpc::Status)>) override;
-      void connect(::grpc::ClientContext* context, const ::medium::Empty* request, ::medium::Start* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void sync(::grpc::ClientContext* context, ::medium::Empty* response, ::grpc::ClientWriteReactor< ::medium::Allocation>* reactor) override;
-      void shutdown(::grpc::ClientContext* context, const ::medium::Empty* request, ::medium::Empty* response, std::function<void(::grpc::Status)>) override;
-      void shutdown(::grpc::ClientContext* context, const ::medium::Empty* request, ::medium::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void connect(::grpc::ClientContext* context,
+                   const ::medium::Empty* request, ::medium::Start* response,
+                   std::function<void(::grpc::Status)>) override;
+      void connect(::grpc::ClientContext* context,
+                   const ::medium::Empty* request, ::medium::Start* response,
+                   ::grpc::ClientUnaryReactor* reactor) override;
+      void sync(
+          ::grpc::ClientContext* context, ::medium::Empty* response,
+          ::grpc::ClientWriteReactor<::medium::Allocation>* reactor) override;
+      void shutdown(::grpc::ClientContext* context,
+                    const ::medium::Empty* request, ::medium::Empty* response,
+                    std::function<void(::grpc::Status)>) override;
+      void shutdown(::grpc::ClientContext* context,
+                    const ::medium::Empty* request, ::medium::Empty* response,
+                    ::grpc::ClientUnaryReactor* reactor) override;
+
      private:
       friend class Stub;
-      explicit async(Stub* stub): stub_(stub) { }
+      explicit async(Stub* stub) : stub_(stub) {}
       Stub* stub() { return stub_; }
       Stub* stub_;
     };
     class async* async() override { return &async_stub_; }
 
    private:
-    std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    class async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::medium::Start>* AsyncconnectRaw(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::medium::Start>* PrepareAsyncconnectRaw(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientWriter< ::medium::Allocation>* syncRaw(::grpc::ClientContext* context, ::medium::Empty* response) override;
-    ::grpc::ClientAsyncWriter< ::medium::Allocation>* AsyncsyncRaw(::grpc::ClientContext* context, ::medium::Empty* response, ::grpc::CompletionQueue* cq, void* tag) override;
-    ::grpc::ClientAsyncWriter< ::medium::Allocation>* PrepareAsyncsyncRaw(::grpc::ClientContext* context, ::medium::Empty* response, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::medium::Empty>* AsyncshutdownRaw(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::medium::Empty>* PrepareAsyncshutdownRaw(::grpc::ClientContext* context, const ::medium::Empty& request, ::grpc::CompletionQueue* cq) override;
+    std::shared_ptr<::grpc::ChannelInterface> channel_;
+    class async async_stub_ {
+      this
+    };
+    ::grpc::ClientAsyncResponseReader<::medium::Start>* AsyncconnectRaw(
+        ::grpc::ClientContext* context, const ::medium::Empty& request,
+        ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader<::medium::Start>* PrepareAsyncconnectRaw(
+        ::grpc::ClientContext* context, const ::medium::Empty& request,
+        ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientWriter<::medium::Allocation>* syncRaw(
+        ::grpc::ClientContext* context, ::medium::Empty* response) override;
+    ::grpc::ClientAsyncWriter<::medium::Allocation>* AsyncsyncRaw(
+        ::grpc::ClientContext* context, ::medium::Empty* response,
+        ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncWriter<::medium::Allocation>* PrepareAsyncsyncRaw(
+        ::grpc::ClientContext* context, ::medium::Empty* response,
+        ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader<::medium::Empty>* AsyncshutdownRaw(
+        ::grpc::ClientContext* context, const ::medium::Empty& request,
+        ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader<::medium::Empty>* PrepareAsyncshutdownRaw(
+        ::grpc::ClientContext* context, const ::medium::Empty& request,
+        ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_connect_;
     const ::grpc::internal::RpcMethod rpcmethod_sync_;
     const ::grpc::internal::RpcMethod rpcmethod_shutdown_;
   };
-  static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
+  static std::unique_ptr<Stub> NewStub(
+      const std::shared_ptr<::grpc::ChannelInterface>& channel,
+      const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
   class Service : public ::grpc::Service {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status connect(::grpc::ServerContext* context, const ::medium::Empty* request, ::medium::Start* response);
-    virtual ::grpc::Status sync(::grpc::ServerContext* context, ::grpc::ServerReader< ::medium::Allocation>* reader, ::medium::Empty* response);
-    virtual ::grpc::Status shutdown(::grpc::ServerContext* context, const ::medium::Empty* request, ::medium::Empty* response);
+    virtual ::grpc::Status connect(::grpc::ServerContext* context,
+                                   const ::medium::Empty* request,
+                                   ::medium::Start* response);
+    virtual ::grpc::Status sync(
+        ::grpc::ServerContext* context,
+        ::grpc::ServerReader<::medium::Allocation>* reader,
+        ::medium::Empty* response);
+    virtual ::grpc::Status shutdown(::grpc::ServerContext* context,
+                                    const ::medium::Empty* request,
+                                    ::medium::Empty* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_connect : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
-    WithAsyncMethod_connect() {
-      ::grpc::Service::MarkMethodAsync(0);
-    }
+    WithAsyncMethod_connect() { ::grpc::Service::MarkMethodAsync(0); }
     ~WithAsyncMethod_connect() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status connect(::grpc::ServerContext* /*context*/, const ::medium::Empty* /*request*/, ::medium::Start* /*response*/) override {
+    ::grpc::Status connect(::grpc::ServerContext* /*context*/,
+                           const ::medium::Empty* /*request*/,
+                           ::medium::Start* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void Requestconnect(::grpc::ServerContext* context, ::medium::Empty* request, ::grpc::ServerAsyncResponseWriter< ::medium::Start>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    void Requestconnect(
+        ::grpc::ServerContext* context, ::medium::Empty* request,
+        ::grpc::ServerAsyncResponseWriter<::medium::Start>* response,
+        ::grpc::CompletionQueue* new_call_cq,
+        ::grpc::ServerCompletionQueue* notification_cq, void* tag) {
+      ::grpc::Service::RequestAsyncUnary(0, context, request, response,
+                                         new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
   class WithAsyncMethod_sync : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
-    WithAsyncMethod_sync() {
-      ::grpc::Service::MarkMethodAsync(1);
-    }
+    WithAsyncMethod_sync() { ::grpc::Service::MarkMethodAsync(1); }
     ~WithAsyncMethod_sync() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status sync(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::medium::Allocation>* /*reader*/, ::medium::Empty* /*response*/) override {
+    ::grpc::Status sync(::grpc::ServerContext* /*context*/,
+                        ::grpc::ServerReader<::medium::Allocation>* /*reader*/,
+                        ::medium::Empty* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void Requestsync(::grpc::ServerContext* context, ::grpc::ServerAsyncReader< ::medium::Empty, ::medium::Allocation>* reader, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncClientStreaming(1, context, reader, new_call_cq, notification_cq, tag);
+    void Requestsync(::grpc::ServerContext* context,
+                     ::grpc::ServerAsyncReader<::medium::Empty,
+                                               ::medium::Allocation>* reader,
+                     ::grpc::CompletionQueue* new_call_cq,
+                     ::grpc::ServerCompletionQueue* notification_cq,
+                     void* tag) {
+      ::grpc::Service::RequestAsyncClientStreaming(
+          1, context, reader, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
   class WithAsyncMethod_shutdown : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
-    WithAsyncMethod_shutdown() {
-      ::grpc::Service::MarkMethodAsync(2);
-    }
+    WithAsyncMethod_shutdown() { ::grpc::Service::MarkMethodAsync(2); }
     ~WithAsyncMethod_shutdown() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status shutdown(::grpc::ServerContext* /*context*/, const ::medium::Empty* /*request*/, ::medium::Empty* /*response*/) override {
+    ::grpc::Status shutdown(::grpc::ServerContext* /*context*/,
+                            const ::medium::Empty* /*request*/,
+                            ::medium::Empty* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void Requestshutdown(::grpc::ServerContext* context, ::medium::Empty* request, ::grpc::ServerAsyncResponseWriter< ::medium::Empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    void Requestshutdown(
+        ::grpc::ServerContext* context, ::medium::Empty* request,
+        ::grpc::ServerAsyncResponseWriter<::medium::Empty>* response,
+        ::grpc::CompletionQueue* new_call_cq,
+        ::grpc::ServerCompletionQueue* notification_cq, void* tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response,
+                                         new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_connect<WithAsyncMethod_sync<WithAsyncMethod_shutdown<Service > > > AsyncService;
+  typedef WithAsyncMethod_connect<
+      WithAsyncMethod_sync<WithAsyncMethod_shutdown<Service>>>
+      AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_connect : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
     WithCallbackMethod_connect() {
-      ::grpc::Service::MarkMethodCallback(0,
-          new ::grpc::internal::CallbackUnaryHandler< ::medium::Empty, ::medium::Start>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const ::medium::Empty* request, ::medium::Start* response) { return this->connect(context, request, response); }));}
+      ::grpc::Service::MarkMethodCallback(
+          0, new ::grpc::internal::CallbackUnaryHandler<::medium::Empty,
+                                                        ::medium::Start>(
+                 [this](::grpc::CallbackServerContext* context,
+                        const ::medium::Empty* request,
+                        ::medium::Start* response) {
+                   return this->connect(context, request, response);
+                 }));
+    }
     void SetMessageAllocatorFor_connect(
-        ::grpc::MessageAllocator< ::medium::Empty, ::medium::Start>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::medium::Empty, ::medium::Start>*>(handler)
-              ->SetMessageAllocator(allocator);
+        ::grpc::MessageAllocator<::medium::Empty, ::medium::Start>* allocator) {
+      ::grpc::internal::MethodHandler* const handler =
+          ::grpc::Service::GetHandler(0);
+      static_cast<::grpc::internal::CallbackUnaryHandler<::medium::Empty,
+                                                         ::medium::Start>*>(
+          handler)
+          ->SetMessageAllocator(allocator);
     }
     ~WithCallbackMethod_connect() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status connect(::grpc::ServerContext* /*context*/, const ::medium::Empty* /*request*/, ::medium::Start* /*response*/) override {
+    ::grpc::Status connect(::grpc::ServerContext* /*context*/,
+                           const ::medium::Empty* /*request*/,
+                           ::medium::Start* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* connect(
-      ::grpc::CallbackServerContext* /*context*/, const ::medium::Empty* /*request*/, ::medium::Start* /*response*/)  { return nullptr; }
+        ::grpc::CallbackServerContext* /*context*/,
+        const ::medium::Empty* /*request*/, ::medium::Start* /*response*/) {
+      return nullptr;
+    }
   };
   template <class BaseClass>
   class WithCallbackMethod_sync : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
     WithCallbackMethod_sync() {
-      ::grpc::Service::MarkMethodCallback(1,
-          new ::grpc::internal::CallbackClientStreamingHandler< ::medium::Allocation, ::medium::Empty>(
-            [this](
-                   ::grpc::CallbackServerContext* context, ::medium::Empty* response) { return this->sync(context, response); }));
+      ::grpc::Service::MarkMethodCallback(
+          1, new ::grpc::internal::CallbackClientStreamingHandler<
+                 ::medium::Allocation, ::medium::Empty>(
+                 [this](::grpc::CallbackServerContext* context,
+                        ::medium::Empty* response) {
+                   return this->sync(context, response);
+                 }));
     }
     ~WithCallbackMethod_sync() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status sync(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::medium::Allocation>* /*reader*/, ::medium::Empty* /*response*/) override {
+    ::grpc::Status sync(::grpc::ServerContext* /*context*/,
+                        ::grpc::ServerReader<::medium::Allocation>* /*reader*/,
+                        ::medium::Empty* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerReadReactor< ::medium::Allocation>* sync(
-      ::grpc::CallbackServerContext* /*context*/, ::medium::Empty* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerReadReactor<::medium::Allocation>* sync(
+        ::grpc::CallbackServerContext* /*context*/,
+        ::medium::Empty* /*response*/) {
+      return nullptr;
+    }
   };
   template <class BaseClass>
   class WithCallbackMethod_shutdown : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
     WithCallbackMethod_shutdown() {
-      ::grpc::Service::MarkMethodCallback(2,
-          new ::grpc::internal::CallbackUnaryHandler< ::medium::Empty, ::medium::Empty>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const ::medium::Empty* request, ::medium::Empty* response) { return this->shutdown(context, request, response); }));}
+      ::grpc::Service::MarkMethodCallback(
+          2, new ::grpc::internal::CallbackUnaryHandler<::medium::Empty,
+                                                        ::medium::Empty>(
+                 [this](::grpc::CallbackServerContext* context,
+                        const ::medium::Empty* request,
+                        ::medium::Empty* response) {
+                   return this->shutdown(context, request, response);
+                 }));
+    }
     void SetMessageAllocatorFor_shutdown(
-        ::grpc::MessageAllocator< ::medium::Empty, ::medium::Empty>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::medium::Empty, ::medium::Empty>*>(handler)
-              ->SetMessageAllocator(allocator);
+        ::grpc::MessageAllocator<::medium::Empty, ::medium::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler =
+          ::grpc::Service::GetHandler(2);
+      static_cast<::grpc::internal::CallbackUnaryHandler<::medium::Empty,
+                                                         ::medium::Empty>*>(
+          handler)
+          ->SetMessageAllocator(allocator);
     }
     ~WithCallbackMethod_shutdown() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status shutdown(::grpc::ServerContext* /*context*/, const ::medium::Empty* /*request*/, ::medium::Empty* /*response*/) override {
+    ::grpc::Status shutdown(::grpc::ServerContext* /*context*/,
+                            const ::medium::Empty* /*request*/,
+                            ::medium::Empty* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* shutdown(
-      ::grpc::CallbackServerContext* /*context*/, const ::medium::Empty* /*request*/, ::medium::Empty* /*response*/)  { return nullptr; }
+        ::grpc::CallbackServerContext* /*context*/,
+        const ::medium::Empty* /*request*/, ::medium::Empty* /*response*/) {
+      return nullptr;
+    }
   };
-  typedef WithCallbackMethod_connect<WithCallbackMethod_sync<WithCallbackMethod_shutdown<Service > > > CallbackService;
+  typedef WithCallbackMethod_connect<
+      WithCallbackMethod_sync<WithCallbackMethod_shutdown<Service>>>
+      CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_connect : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
-    WithGenericMethod_connect() {
-      ::grpc::Service::MarkMethodGeneric(0);
-    }
+    WithGenericMethod_connect() { ::grpc::Service::MarkMethodGeneric(0); }
     ~WithGenericMethod_connect() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status connect(::grpc::ServerContext* /*context*/, const ::medium::Empty* /*request*/, ::medium::Start* /*response*/) override {
+    ::grpc::Status connect(::grpc::ServerContext* /*context*/,
+                           const ::medium::Empty* /*request*/,
+                           ::medium::Start* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -305,15 +496,16 @@ class Medium final {
   class WithGenericMethod_sync : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
-    WithGenericMethod_sync() {
-      ::grpc::Service::MarkMethodGeneric(1);
-    }
+    WithGenericMethod_sync() { ::grpc::Service::MarkMethodGeneric(1); }
     ~WithGenericMethod_sync() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status sync(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::medium::Allocation>* /*reader*/, ::medium::Empty* /*response*/) override {
+    ::grpc::Status sync(::grpc::ServerContext* /*context*/,
+                        ::grpc::ServerReader<::medium::Allocation>* /*reader*/,
+                        ::medium::Empty* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -322,15 +514,16 @@ class Medium final {
   class WithGenericMethod_shutdown : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
-    WithGenericMethod_shutdown() {
-      ::grpc::Service::MarkMethodGeneric(2);
-    }
+    WithGenericMethod_shutdown() { ::grpc::Service::MarkMethodGeneric(2); }
     ~WithGenericMethod_shutdown() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status shutdown(::grpc::ServerContext* /*context*/, const ::medium::Empty* /*request*/, ::medium::Empty* /*response*/) override {
+    ::grpc::Status shutdown(::grpc::ServerContext* /*context*/,
+                            const ::medium::Empty* /*request*/,
+                            ::medium::Empty* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -339,188 +532,251 @@ class Medium final {
   class WithRawMethod_connect : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
-    WithRawMethod_connect() {
-      ::grpc::Service::MarkMethodRaw(0);
-    }
+    WithRawMethod_connect() { ::grpc::Service::MarkMethodRaw(0); }
     ~WithRawMethod_connect() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status connect(::grpc::ServerContext* /*context*/, const ::medium::Empty* /*request*/, ::medium::Start* /*response*/) override {
+    ::grpc::Status connect(::grpc::ServerContext* /*context*/,
+                           const ::medium::Empty* /*request*/,
+                           ::medium::Start* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void Requestconnect(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    void Requestconnect(
+        ::grpc::ServerContext* context, ::grpc::ByteBuffer* request,
+        ::grpc::ServerAsyncResponseWriter<::grpc::ByteBuffer>* response,
+        ::grpc::CompletionQueue* new_call_cq,
+        ::grpc::ServerCompletionQueue* notification_cq, void* tag) {
+      ::grpc::Service::RequestAsyncUnary(0, context, request, response,
+                                         new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
   class WithRawMethod_sync : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
-    WithRawMethod_sync() {
-      ::grpc::Service::MarkMethodRaw(1);
-    }
-    ~WithRawMethod_sync() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
+    WithRawMethod_sync() { ::grpc::Service::MarkMethodRaw(1); }
+    ~WithRawMethod_sync() override { BaseClassMustBeDerivedFromService(this); }
     // disable synchronous version of this method
-    ::grpc::Status sync(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::medium::Allocation>* /*reader*/, ::medium::Empty* /*response*/) override {
+    ::grpc::Status sync(::grpc::ServerContext* /*context*/,
+                        ::grpc::ServerReader<::medium::Allocation>* /*reader*/,
+                        ::medium::Empty* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void Requestsync(::grpc::ServerContext* context, ::grpc::ServerAsyncReader< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* reader, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncClientStreaming(1, context, reader, new_call_cq, notification_cq, tag);
+    void Requestsync(::grpc::ServerContext* context,
+                     ::grpc::ServerAsyncReader<::grpc::ByteBuffer,
+                                               ::grpc::ByteBuffer>* reader,
+                     ::grpc::CompletionQueue* new_call_cq,
+                     ::grpc::ServerCompletionQueue* notification_cq,
+                     void* tag) {
+      ::grpc::Service::RequestAsyncClientStreaming(
+          1, context, reader, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
   class WithRawMethod_shutdown : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
-    WithRawMethod_shutdown() {
-      ::grpc::Service::MarkMethodRaw(2);
-    }
+    WithRawMethod_shutdown() { ::grpc::Service::MarkMethodRaw(2); }
     ~WithRawMethod_shutdown() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status shutdown(::grpc::ServerContext* /*context*/, const ::medium::Empty* /*request*/, ::medium::Empty* /*response*/) override {
+    ::grpc::Status shutdown(::grpc::ServerContext* /*context*/,
+                            const ::medium::Empty* /*request*/,
+                            ::medium::Empty* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void Requestshutdown(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    void Requestshutdown(
+        ::grpc::ServerContext* context, ::grpc::ByteBuffer* request,
+        ::grpc::ServerAsyncResponseWriter<::grpc::ByteBuffer>* response,
+        ::grpc::CompletionQueue* new_call_cq,
+        ::grpc::ServerCompletionQueue* notification_cq, void* tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response,
+                                         new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
   class WithRawCallbackMethod_connect : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
     WithRawCallbackMethod_connect() {
-      ::grpc::Service::MarkMethodRawCallback(0,
-          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->connect(context, request, response); }));
+      ::grpc::Service::MarkMethodRawCallback(
+          0, new ::grpc::internal::CallbackUnaryHandler<::grpc::ByteBuffer,
+                                                        ::grpc::ByteBuffer>(
+                 [this](::grpc::CallbackServerContext* context,
+                        const ::grpc::ByteBuffer* request,
+                        ::grpc::ByteBuffer* response) {
+                   return this->connect(context, request, response);
+                 }));
     }
     ~WithRawCallbackMethod_connect() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status connect(::grpc::ServerContext* /*context*/, const ::medium::Empty* /*request*/, ::medium::Start* /*response*/) override {
+    ::grpc::Status connect(::grpc::ServerContext* /*context*/,
+                           const ::medium::Empty* /*request*/,
+                           ::medium::Start* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* connect(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+        ::grpc::CallbackServerContext* /*context*/,
+        const ::grpc::ByteBuffer* /*request*/,
+        ::grpc::ByteBuffer* /*response*/) {
+      return nullptr;
+    }
   };
   template <class BaseClass>
   class WithRawCallbackMethod_sync : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
     WithRawCallbackMethod_sync() {
-      ::grpc::Service::MarkMethodRawCallback(1,
-          new ::grpc::internal::CallbackClientStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-            [this](
-                   ::grpc::CallbackServerContext* context, ::grpc::ByteBuffer* response) { return this->sync(context, response); }));
+      ::grpc::Service::MarkMethodRawCallback(
+          1, new ::grpc::internal::CallbackClientStreamingHandler<
+                 ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+                 [this](::grpc::CallbackServerContext* context,
+                        ::grpc::ByteBuffer* response) {
+                   return this->sync(context, response);
+                 }));
     }
     ~WithRawCallbackMethod_sync() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status sync(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::medium::Allocation>* /*reader*/, ::medium::Empty* /*response*/) override {
+    ::grpc::Status sync(::grpc::ServerContext* /*context*/,
+                        ::grpc::ServerReader<::medium::Allocation>* /*reader*/,
+                        ::medium::Empty* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerReadReactor< ::grpc::ByteBuffer>* sync(
-      ::grpc::CallbackServerContext* /*context*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerReadReactor<::grpc::ByteBuffer>* sync(
+        ::grpc::CallbackServerContext* /*context*/,
+        ::grpc::ByteBuffer* /*response*/) {
+      return nullptr;
+    }
   };
   template <class BaseClass>
   class WithRawCallbackMethod_shutdown : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
     WithRawCallbackMethod_shutdown() {
-      ::grpc::Service::MarkMethodRawCallback(2,
-          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->shutdown(context, request, response); }));
+      ::grpc::Service::MarkMethodRawCallback(
+          2, new ::grpc::internal::CallbackUnaryHandler<::grpc::ByteBuffer,
+                                                        ::grpc::ByteBuffer>(
+                 [this](::grpc::CallbackServerContext* context,
+                        const ::grpc::ByteBuffer* request,
+                        ::grpc::ByteBuffer* response) {
+                   return this->shutdown(context, request, response);
+                 }));
     }
     ~WithRawCallbackMethod_shutdown() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status shutdown(::grpc::ServerContext* /*context*/, const ::medium::Empty* /*request*/, ::medium::Empty* /*response*/) override {
+    ::grpc::Status shutdown(::grpc::ServerContext* /*context*/,
+                            const ::medium::Empty* /*request*/,
+                            ::medium::Empty* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* shutdown(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+        ::grpc::CallbackServerContext* /*context*/,
+        const ::grpc::ByteBuffer* /*request*/,
+        ::grpc::ByteBuffer* /*response*/) {
+      return nullptr;
+    }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_connect : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
     WithStreamedUnaryMethod_connect() {
-      ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler<
-          ::medium::Empty, ::medium::Start>(
-            [this](::grpc::ServerContext* context,
-                   ::grpc::ServerUnaryStreamer<
-                     ::medium::Empty, ::medium::Start>* streamer) {
-                       return this->Streamedconnect(context,
-                         streamer);
-                  }));
+      ::grpc::Service::MarkMethodStreamed(
+          0,
+          new ::grpc::internal::StreamedUnaryHandler<::medium::Empty,
+                                                     ::medium::Start>(
+              [this](::grpc::ServerContext* context,
+                     ::grpc::ServerUnaryStreamer<::medium::Empty,
+                                                 ::medium::Start>* streamer) {
+                return this->Streamedconnect(context, streamer);
+              }));
     }
     ~WithStreamedUnaryMethod_connect() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status connect(::grpc::ServerContext* /*context*/, const ::medium::Empty* /*request*/, ::medium::Start* /*response*/) override {
+    ::grpc::Status connect(::grpc::ServerContext* /*context*/,
+                           const ::medium::Empty* /*request*/,
+                           ::medium::Start* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status Streamedconnect(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::medium::Empty,::medium::Start>* server_unary_streamer) = 0;
+    virtual ::grpc::Status Streamedconnect(
+        ::grpc::ServerContext* context,
+        ::grpc::ServerUnaryStreamer<::medium::Empty, ::medium::Start>*
+            server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_shutdown : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+
    public:
     WithStreamedUnaryMethod_shutdown() {
-      ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::StreamedUnaryHandler<
-          ::medium::Empty, ::medium::Empty>(
-            [this](::grpc::ServerContext* context,
-                   ::grpc::ServerUnaryStreamer<
-                     ::medium::Empty, ::medium::Empty>* streamer) {
-                       return this->Streamedshutdown(context,
-                         streamer);
-                  }));
+      ::grpc::Service::MarkMethodStreamed(
+          2,
+          new ::grpc::internal::StreamedUnaryHandler<::medium::Empty,
+                                                     ::medium::Empty>(
+              [this](::grpc::ServerContext* context,
+                     ::grpc::ServerUnaryStreamer<::medium::Empty,
+                                                 ::medium::Empty>* streamer) {
+                return this->Streamedshutdown(context, streamer);
+              }));
     }
     ~WithStreamedUnaryMethod_shutdown() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status shutdown(::grpc::ServerContext* /*context*/, const ::medium::Empty* /*request*/, ::medium::Empty* /*response*/) override {
+    ::grpc::Status shutdown(::grpc::ServerContext* /*context*/,
+                            const ::medium::Empty* /*request*/,
+                            ::medium::Empty* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status Streamedshutdown(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::medium::Empty,::medium::Empty>* server_unary_streamer) = 0;
+    virtual ::grpc::Status Streamedshutdown(
+        ::grpc::ServerContext* context,
+        ::grpc::ServerUnaryStreamer<::medium::Empty, ::medium::Empty>*
+            server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_connect<WithStreamedUnaryMethod_shutdown<Service > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_connect<
+      WithStreamedUnaryMethod_shutdown<Service>>
+      StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_connect<WithStreamedUnaryMethod_shutdown<Service > > StreamedService;
+  typedef WithStreamedUnaryMethod_connect<
+      WithStreamedUnaryMethod_shutdown<Service>>
+      StreamedService;
 };
 
 }  // namespace medium
-
 
 #endif  // GRPC_medium_2eproto__INCLUDED
