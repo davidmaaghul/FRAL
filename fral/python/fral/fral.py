@@ -20,19 +20,22 @@ class FRAL(object):
     def _create(self, sz: int, max_entries: int) -> "fral_cpp.FRAL":
         self._ral = fral_cpp.FRAL(self._file_name, sz, max_entries)
 
+    def prime_cache(self):
+        self._ral.prime_cache()
+
     def allocate(self, sz: int) -> Optional[memoryview]:
         blob = self._ral.allocate(sz)
         if not blob:
             return None
-        b = fral_cpp.Bytes(blob)
+        b = fral_cpp.Bytes(blob, sz)
         return b.read()
 
     def append(self, arr: memoryview) -> int:
         return self._ral.append(fral_cpp.memoryview_to_pointer(arr))
 
-    def read(self, idx: int) -> Optional[memoryview]:
+    def read(self, idx: int, sz: int) -> Optional[memoryview]:
         blob = self._ral.load(idx)
         if not blob:
             return None
-        b = fral_cpp.Bytes(blob)
+        b = fral_cpp.Bytes(blob, sz)
         return b.read()

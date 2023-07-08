@@ -1,7 +1,8 @@
-#include "gflags/gflags.h"
-#include <iostream>
-#include <fstream>
 #include <chrono>
+#include <fstream>
+#include <iostream>
+
+#include "gflags/gflags.h"
 #include "utility.h"
 
 using namespace std::chrono;
@@ -11,40 +12,36 @@ DEFINE_int32(size, 100, "Provide entry size in bytes");
 DEFINE_string(bin_name, "write-test.bin", "Provide bin name");
 DEFINE_string(csv_name, "write-test.csv", "Provide csv name");
 
+int main(int argc, char** argv) {
+  gflags::ParseCommandLineFlags(&argc, &argv, false);
 
-int main(int argc, char** argv){
+  auto entries = create<fral::FRAL>(FLAGS_size, FLAGS_bin_name, FLAGS_gib);
 
-    gflags::ParseCommandLineFlags(&argc, &argv, false);
+  fral::FRAL ral(FLAGS_bin_name.c_str());
+  ral.primeCache();
 
-    auto entries = create(FLAGS_size, FLAGS_bin_name, FLAGS_gib);
+  auto stream = (char *) malloc(FLAGS_size);
 
-    fral::FRAL ral(FLAGS_bin_name.c_str());
+  auto start = high_resolution_clock::now();
 
-    char stream[FLAGS_size];
+  for (;;) {
+    auto blob = ral.allocate(FLAGS_size);
 
-    auto start = high_resolution_clock::now();
-
-    for(;;){
-
-        auto blob = ral.allocate(FLAGS_size);
-
-        if(!blob){
-            break;
-        }
-
-        memcpy(blob, stream, FLAGS_size);
-        ral.append(blob);
-
+    if (!blob) {
+      break;
     }
 
-    auto stop = high_resolution_clock::now();
+    memcpy(blob, stream, FLAGS_size);
+    ral.append(blob);
+  }
 
+  auto stop = high_resolution_clock::now();
 
-    std::ofstream csvFile(FLAGS_csv_name);
-    csvFile << "Time,Entries,Size" << std::endl;
-    csvFile << duration_cast<nanoseconds>(stop - start).count() << "," << entries << "," << FLAGS_size << std::endl;
-    csvFile.close();
+  std::ofstream csvFile(FLAGS_csv_name);
+  csvFile << "Time,Entries,Size" << std::endl;
+  csvFile << duration_cast<nanoseconds>(stop - start).count() << "," << entries
+          << "," << FLAGS_size << std::endl;
+  csvFile.close();
 
-    std::cout << "write test exe complete" << std::endl;
-
+  std::cout << "write test exe complete" << std::endl;
 }

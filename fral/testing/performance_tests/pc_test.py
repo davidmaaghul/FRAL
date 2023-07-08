@@ -3,23 +3,28 @@ import subprocess
 import os
 import tempfile
 import pandas as pd
-from fral.testing.performance_tests import TEST_PATH, RELEASE_PATH, BLOB_SIZES, WRITERS, GB_TO_B
-
-TOTAL_SIZE = 1*GB_TO_B  # 1 GB
+from fral.testing.performance_tests import (
+    TEST_PATH,
+    RELEASE_PATH,
+    BLOB_SIZES,
+    WRITERS,
+)
 
 
 def spawn_test(writers: int, blob_size: int, csv_name: str, bin_name: str):
-    sp = subprocess.Popen([
-        os.path.join(RELEASE_PATH, "pc_test"),
-        "--size",
-        str(blob_size),
-        "--bin_name",
-        bin_name,
-        "--csv_name",
-        csv_name,
-        "--writers",
-        str(writers)
-    ])
+    sp = subprocess.Popen(
+        [
+            os.path.join(RELEASE_PATH, "pc_test"),
+            "--size",
+            str(blob_size),
+            "--bin_name",
+            bin_name,
+            "--csv_name",
+            csv_name,
+            "--writers",
+            str(writers),
+        ]
+    )
     sp.wait()
 
 
@@ -41,7 +46,7 @@ def main():
                 sub_df = pd.read_csv(csv_name)
                 output_df = pd.concat([output_df, sub_df])
 
-    output_df.to_csv(os.path.join(TEST_PATH, "test-results", "local", "pc_test.csv"), index=False, compression='gzip')
+    output_df.to_csv(os.path.join(TEST_PATH, "test-results", "pc_test.csv"), index=False)
     print("Producer-consumer test complete")
 
 
