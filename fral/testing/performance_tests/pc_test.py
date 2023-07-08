@@ -8,10 +8,7 @@ from fral.testing.performance_tests import (
     RELEASE_PATH,
     BLOB_SIZES,
     WRITERS,
-    GB_TO_B,
 )
-
-TOTAL_SIZE = 1 * GB_TO_B  # 1 GB
 
 
 def spawn_test(writers: int, blob_size: int, csv_name: str, bin_name: str):

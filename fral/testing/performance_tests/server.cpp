@@ -26,8 +26,7 @@ void listener(fral::server *server) { server->listenForKill(); }
 int main(int argc, char **argv) {
   gflags::ParseCommandLineFlags(&argc, &argv, false);
 
-  auto entries =
-      create<fral::FRAL2>(FLAGS_size, FLAGS_bin_name, FLAGS_gib, FLAGS_entries);
+    auto entries = create<fral::FRAL2>(FLAGS_size, FLAGS_bin_name, FLAGS_gib, FLAGS_entries);
 
   auto pid = fork();
 

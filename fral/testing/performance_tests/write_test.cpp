@@ -19,7 +19,8 @@ int main(int argc, char** argv) {
 
   fral::FRAL ral(FLAGS_bin_name.c_str());
   ral.primeCache();
-  auto stream = malloc(FLAGS_size);
+
+  auto stream = (char *) malloc(FLAGS_size);
 
   auto start = high_resolution_clock::now();
 

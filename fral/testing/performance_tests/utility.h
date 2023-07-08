@@ -8,7 +8,7 @@
 using namespace std::chrono;
 const int GB_TO_B = 1000000000;
 
-template <typename T>
+template <class T>
 size_t create(int size, const std::string& name, int gib, int maxEntries = 0) {
   assert(size > sizeof(high_resolution_clock::time_point));
   size_t totalSize = static_cast<size_t>(gib) * GB_TO_B;

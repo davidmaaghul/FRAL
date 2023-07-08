@@ -1,9 +1,6 @@
 #include "../../network/client.h"
-
-#include <sys/wait.h>
-
 #include <iostream>
-
+#include "thread"
 #include "gflags/gflags.h"
 #include "utility.h"
 
@@ -16,8 +13,7 @@ DEFINE_int32(size, 100, "Enter size of entries");
 int main(int argc, char **argv) {
   gflags::ParseCommandLineFlags(&argc, &argv, false);
 
-  auto entries =
-      create<fral::FRAL2>(FLAGS_size, FLAGS_bin_name, FLAGS_gib, FLAGS_entries);
+  auto entries = create<fral::FRAL2>(FLAGS_size, FLAGS_bin_name, FLAGS_gib, FLAGS_entries);
 
   auto pid = fork();
 
@@ -27,6 +23,7 @@ int main(int argc, char **argv) {
     ralC.primeCache();
     fral::client client(&ralC, FLAGS_port, "localhost");
     client.sync(entries);
+    std::cout << "Finished sending" << std::endl;
     auto exitCode = client.shutdown();
     std::cout << "Shut down server with exit code " << exitCode << std::endl;
     exit(0);

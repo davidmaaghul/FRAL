@@ -7,7 +7,7 @@ size_t FRAL2::getBlobSize(void *blob) {
   return *(size_t *)sizeAddress;
 }
 
-void *FRAL2::allocate(size_t sz) {
+void *FRAL2::allocate(ssize_t sz) {
   if (sz == 0) {
     return nullptr;
   }

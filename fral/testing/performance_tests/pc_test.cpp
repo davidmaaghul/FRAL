@@ -1,5 +1,3 @@
-#include <sys/wait.h>
-
 #include <fstream>
 #include <iostream>
 

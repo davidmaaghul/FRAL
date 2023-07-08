@@ -15,7 +15,7 @@ class FRAL2 : public FRAL {
 
   explicit FRAL2(const char* fileName) : FRAL(fileName) {}
 
-  void* allocate(size_t sz) override;
+  void* allocate(ssize_t sz) override;
 
   static size_t getBlobSize(void* blob);
 };

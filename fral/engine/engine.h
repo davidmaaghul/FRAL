@@ -19,13 +19,15 @@ class FRAL {
 
   FRAL(const char* fileName);
 
-  virtual void* allocate(size_t sz);
+  virtual void* allocate(ssize_t sz);
 
   int append(void* blob);
 
   void* load(int idx);
 
   int size();
+
+  static size_t getBlobSize(void* blob);
 
   void primeCache();
 
