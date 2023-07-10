@@ -15,7 +15,7 @@ DEFINE_string(csv_name, "write-test.csv", "Provide csv name");
 int main(int argc, char** argv) {
   gflags::ParseCommandLineFlags(&argc, &argv, false);
 
-  auto entries = create<fral::FRAL>(FLAGS_size, FLAGS_bin_name, FLAGS_gib);
+  auto entries = create(FLAGS_size, FLAGS_bin_name, FLAGS_gib);
 
   fral::FRAL ral(FLAGS_bin_name.c_str());
   ral.primeCache();

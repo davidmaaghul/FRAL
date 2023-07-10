@@ -1,2 +1,2 @@
-# FRAL
-Fast Random Access Log
+# Fast Random Access Log (FRAL)
+

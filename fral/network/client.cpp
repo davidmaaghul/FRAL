@@ -3,7 +3,6 @@
 #include <grpcpp/grpcpp.h>
 
 #include <iostream>
-#include <memory>
 
 using grpc::Channel;
 using grpc::ClientContext;
@@ -16,7 +15,7 @@ using medium::Start;
 
 namespace fral {
 
-client::client(fral::FRAL2 *ral, const std::string &port,
+client::client(fral::FRAL *ral, const std::string &port,
                const std::string &host)
     : ral(ral) {
   std::string loc = host + ":" + port;
@@ -52,7 +51,7 @@ int client::sync(const int &end) {
   while (nextIdx < end) {
     auto blob = ral->load(nextIdx);
     if (blob) {
-      alloc.set_allocation((char *)blob, fral::FRAL2::getBlobSize(blob));
+      alloc.set_allocation((char *)blob, fral::FRAL::getBlobSize(blob));
       if (!stream->Write(
               alloc,
               grpc::WriteOptions().set_no_compression().set_buffer_hint())) {

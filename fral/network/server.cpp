@@ -9,7 +9,7 @@
 
 namespace fral {
 
-server::server(fral::FRAL2 *ral, std::string &port, std::string &host)
+server::server(fral::FRAL *ral, std::string &port, std::string &host)
     : ral(ral), port(port), host(host) {}
 
 Status server::connect(ServerContext *context, const Empty *hello,
