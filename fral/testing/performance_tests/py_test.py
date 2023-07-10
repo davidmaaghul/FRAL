@@ -46,7 +46,7 @@ def run_one_pc(blob_size: int, writers: int, tmp_dir: str):
         buffer = memoryview(bytearray(("c" * blob_size).encode()))
         i = 0
         while i < entries:
-            blob = ral.read(i, blob_size)
+            blob = ral.read(i)
             if blob:
                 buffer[:blob_size] = blob
                 i += 1
@@ -138,4 +138,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

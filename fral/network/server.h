@@ -9,7 +9,7 @@
 #include <string>
 #include <thread>
 
-#include "../engine/engine2.h"
+#include "../engine/engine.h"
 #include "medium.grpc.pb.h"
 
 using medium::Allocation;
@@ -27,7 +27,7 @@ namespace fral {
 
 class server : public Medium::Service {
  public:
-  server(fral::FRAL2 *log, std::string &port, std::string &host);
+  server(fral::FRAL *log, std::string &port, std::string &host);
 
   Status connect(ServerContext *context, const Empty *hello,
                  Start *start) override;
@@ -47,7 +47,7 @@ class server : public Medium::Service {
  protected:
   void createServer();
 
-  fral::FRAL2 *ral;
+  fral::FRAL *ral;
 
   bool keepAlive = true;
 
@@ -60,6 +60,7 @@ class server : public Medium::Service {
   std::string port;
 
   std::unique_ptr<Server> server_;
+
 };
 
 }  // namespace fral

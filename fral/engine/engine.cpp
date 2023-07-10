@@ -4,14 +4,14 @@
 #include <fstream>
 #include <iostream>
 
-const size_t EMPTY_IDX = -1;
+const size_t EMPTY_IDX = 0;
 
 namespace fral {
 
 FRAL::FRAL(const char* fileName, size_t size, size_t maxEntries)
     : maxEntries(maxEntries), fileName(fileName) {
-  auto admin = maxEntries * sizeof(ssize_t) + sizeof(Map);
-  createFile(size + admin + maxEntries*sizeof(ssize_t));
+  auto admin = maxEntries * sizeof(size_t) + sizeof(Map);
+  createFile(size + admin + maxEntries*sizeof(size_t));
   createMMRegion();
 
   map->heapStart.store(admin);
@@ -25,7 +25,7 @@ FRAL::FRAL(const char* fileName, size_t size, size_t maxEntries)
 
 FRAL::FRAL(const char* fileName) : fileName(fileName) {
   createMMRegion();
-  maxEntries = (map->heapStart - sizeof(Map)) / sizeof(ssize_t);
+  maxEntries = (map->heapStart - sizeof(Map)) / sizeof(size_t);
 }
 
 void FRAL::primeCache() {
@@ -54,26 +54,26 @@ void FRAL::createMMRegion() {
   map = (Map*)mappedRegion->get_address();
 }
 
-void *FRAL::allocate(ssize_t sz) {
+void *FRAL::allocate(size_t sz) {
     if (sz == 0) {
         return nullptr;
     }
 
-    auto currentEntry = map->heapNext.fetch_add(sz + sizeof(ssize_t *));
+    auto currentEntry = map->heapNext.fetch_add(sz + sizeof(size_t *));
 
     if (currentEntry + sz > mappedRegion->get_size()) {
         return nullptr;
     }
 
     char *currentAddress = ((char *)map) + currentEntry;
-    *(ssize_t *)currentAddress = sz;
+    *(size_t *)currentAddress = sz;
 
-    return currentAddress + sizeof(ssize_t *);
+    return currentAddress + sizeof(size_t *);
 }
 
 
 int FRAL::append(void* blob) {
-  auto offset = (ssize_t)((char*)blob - (char*)map);
+  auto offset = (size_t)((char*)blob - (char*)map);
   auto empty_idx = EMPTY_IDX;
 
   for (auto index = map->indexNext.load(); index < maxEntries; index++) {
@@ -105,8 +105,8 @@ int FRAL::size() {
 }
 
 size_t FRAL::getBlobSize(void *blob) {
-    char *sizeAddress = (char *)blob - sizeof(ssize_t *);
-    return *(ssize_t *)sizeAddress;
+    char *sizeAddress = (char *)blob - sizeof(size_t *);
+    return *(size_t *)sizeAddress;
 }
 
 

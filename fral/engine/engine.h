@@ -19,7 +19,7 @@ class FRAL {
 
   FRAL(const char* fileName);
 
-  virtual void* allocate(ssize_t sz);
+  virtual void* allocate(size_t sz);
 
   int append(void* blob);
 
