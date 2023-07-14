@@ -1,3 +1,3 @@
-[submodule "fral/python/ext/nanobind"]
-	path = fral/python/ext/nanobind
+[submodule "ext/nanobind"]
+	path = ext/nanobind
 	url = https://github.com/wjakob/nanobind

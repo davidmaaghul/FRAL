@@ -3,6 +3,8 @@ project(FRAL C CXX)
 set(CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
 
+find_package(Python 3.11.4 COMPONENTS Interpreter Development.Module REQUIRED)
+add_subdirectory(ext/nanobind)
 find_package(Boost 1.57.0 COMPONENTS system filesystem program_options regex timer chrono REQUIRED)
 find_package(gflags 2.2.2 REQUIRED)
 find_package(Protobuf CONFIG REQUIRED)
