@@ -24,6 +24,9 @@ void * memoryview_to_pointer(memoryview *bytearr){
     return bytearr->c_str();
 }
 
+size_t blobSize(void *blob){
+    return fral::FRAL::getBlobSize(blob);
+}
 
 NB_MODULE(fral_ext, m) {
 nb::class_<fral::FRAL>(m, "FRAL")
@@ -32,11 +35,15 @@ nb::class_<fral::FRAL>(m, "FRAL")
 .def("allocate", &fral::FRAL::allocate)
 .def("append", &fral::FRAL::append)
 .def("load", &fral::FRAL::load)
+.def("size", &fral::FRAL::size)
+.def("max_size", &fral::FRAL::maxSize)
+.def("memory", &fral::FRAL::memory)
+.def("max_memory", &fral::FRAL::maxMemory)
+.def_static("get_blob_size", &fral::FRAL::getBlobSize)
 .def("prime_cache", &fral::FRAL::primeCache);
 
 nb::class_<Bytes>(m, "Bytes")
 .def(nb::init<void *>())
 .def("read", &Bytes::read_bytes, nb::rv_policy::reference);
 m.def("memoryview_to_pointer", &memoryview_to_pointer, nb::rv_policy::reference);
-
 }

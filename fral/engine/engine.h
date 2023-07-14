@@ -5,8 +5,9 @@
 #include <boost/interprocess/mapped_region.hpp>
 
 struct Map {
-  std::atomic<size_t> heapStart;
+  size_t heapStart;
   std::atomic<size_t> heapNext;
+  std::atomic<size_t> heapTotal;
   std::atomic<size_t> indexNext;
   std::atomic<size_t> records[0];
 };
@@ -27,6 +28,12 @@ class FRAL {
 
   int size();
 
+  int maxSize();
+
+  size_t memory();
+
+  size_t maxMemory();
+
   static size_t getBlobSize(void* blob);
 
   void primeCache();
@@ -35,6 +42,8 @@ class FRAL {
   boost::interprocess::mapped_region* mappedRegion{};
 
   size_t maxEntries;
+
+  size_t maxSpace;
 
   Map* map{};
 

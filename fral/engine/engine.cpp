@@ -9,13 +9,14 @@ const size_t EMPTY_IDX = 0;
 namespace fral {
 
 FRAL::FRAL(const char* fileName, size_t size, size_t maxEntries)
-    : maxEntries(maxEntries), fileName(fileName) {
+    : maxEntries(maxEntries), fileName(fileName), maxSpace(size) {
   auto admin = maxEntries * sizeof(size_t) + sizeof(Map);
   createFile(size + admin + maxEntries*sizeof(size_t));
   createMMRegion();
 
-  map->heapStart.store(admin);
+  map->heapStart = admin;
   map->heapNext.store(map->heapStart);
+  map->heapTotal.store(0);
   map->indexNext.store(0);
 
   for (int i = 0; i < maxEntries; i++) {
@@ -55,15 +56,18 @@ void FRAL::createMMRegion() {
 }
 
 void *FRAL::allocate(size_t sz) {
+
     if (sz == 0) {
         return nullptr;
     }
 
     auto currentEntry = map->heapNext.fetch_add(sz + sizeof(size_t *));
 
-    if (currentEntry + sz > mappedRegion->get_size()) {
+    if (currentEntry + sz + sizeof(size_t *) > mappedRegion->get_size()) {
         return nullptr;
     }
+
+    map->heapTotal.fetch_add(sz);
 
     char *currentAddress = ((char *)map) + currentEntry;
     *(size_t *)currentAddress = sz;
@@ -98,11 +102,24 @@ void* FRAL::load(int idx) {
 int FRAL::size() {
   for (auto index = map->indexNext.load(); index < maxEntries; ++index) {
     if (map->records[index].load() == EMPTY_IDX) {
-      return index + 1;
+      return index;
     }
   }
   return maxEntries;
 }
+
+int FRAL::maxSize() {
+    return maxEntries;
+}
+
+size_t FRAL::memory() {
+    return map->heapTotal;
+}
+
+size_t FRAL::maxMemory() {
+    return maxSpace;
+}
+
 
 size_t FRAL::getBlobSize(void *blob) {
     char *sizeAddress = (char *)blob - sizeof(size_t *);

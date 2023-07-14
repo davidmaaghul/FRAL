@@ -30,6 +30,22 @@ class FRAL(object):
         b = fral_cpp.Bytes(blob)
         return b.read()
 
+    def size(self):
+        return self._ral.size()
+
+    def max_size(self):
+        return self._ral.max_size()
+
+    def memory(self):
+        return self._ral.memory()
+
+    def max_memory(self):
+        return self._ral.max_memory()
+
+    def get_blob_size(self, arr: memoryview) -> int:
+        capsule = fral_cpp.memoryview_to_pointer(arr)
+        return self._ral.get_blob_size(capsule)
+
     def append(self, arr: memoryview) -> int:
         return self._ral.append(fral_cpp.memoryview_to_pointer(arr))
 
