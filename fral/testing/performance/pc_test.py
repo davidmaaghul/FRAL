@@ -3,7 +3,7 @@ import subprocess
 import os
 import tempfile
 import pandas as pd
-from fral.testing.performance_tests import (
+from fral.testing.performance import (
     TEST_PATH,
     RELEASE_PATH,
     BLOB_SIZES,

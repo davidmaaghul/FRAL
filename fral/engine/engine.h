@@ -6,6 +6,8 @@
 
 struct Map {
   size_t heapStart;
+  size_t maxEntries;
+  size_t maxMemory;
   std::atomic<size_t> heapNext;
   std::atomic<size_t> heapTotal;
   std::atomic<size_t> indexNext;
@@ -20,30 +22,30 @@ class FRAL {
 
   FRAL(const char* fileName);
 
+  virtual ~FRAL() = default;
+
   virtual void* allocate(size_t sz);
 
-  int append(void* blob);
+  ssize_t append(void* blob);
 
-  void* load(int idx);
+  void* load(size_t idx) const;
 
-  int size();
+  size_t size() const;
 
-  int maxSize();
+  size_t maxSize() const;
 
-  size_t memory();
+  size_t memory() const;
 
-  size_t maxMemory();
+  size_t maxMemory() const;
 
   static size_t getBlobSize(void* blob);
 
   void primeCache();
 
+  void* operator[](size_t idx) const;
+
  protected:
   boost::interprocess::mapped_region* mappedRegion{};
-
-  size_t maxEntries;
-
-  size_t maxSpace;
 
   Map* map{};
 

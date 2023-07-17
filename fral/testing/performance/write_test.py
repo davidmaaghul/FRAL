@@ -4,7 +4,7 @@ import subprocess
 import tempfile
 
 import pandas as pd
-from fral.testing.performance_tests import TEST_PATH, RELEASE_PATH, BLOB_SIZES
+from fral.testing.performance import TEST_PATH, RELEASE_PATH, BLOB_SIZES
 
 
 def spawn_test(blob_size: int, csv_name: str, bin_name: str):
