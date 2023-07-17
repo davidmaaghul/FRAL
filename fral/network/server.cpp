@@ -9,12 +9,11 @@
 
 namespace fral {
 
-server::server(fral::FRAL *ral, std::string &port, std::string &host)
-    : ral(ral), port(port), host(host) {}
+server::server(fral::FRAL *ral, std::string &port, std::string &host, int startIdx)
+    : ral(ral), port(port), startIdx(startIdx), host(host) {}
 
 Status server::connect(ServerContext *context, const Empty *hello,
                        Start *start) {
-  auto startIdx = ral->size() - 1;
   start->set_idx(startIdx);
   return Status::OK;
 }
@@ -47,7 +46,7 @@ Status server::shutdown(ServerContext *context, const Empty *finish,
 
 void server::run() {
   createServer();
-  std::cout << "FRAL2 server listening on " << host + ":" + port << std::endl;
+  std::cout << "FRAL server listening on " << host + ":" + port << std::endl;
   server_->Wait();
 }
 

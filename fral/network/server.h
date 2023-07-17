@@ -27,7 +27,7 @@ namespace fral {
 
 class server : public Medium::Service {
  public:
-  server(fral::FRAL *log, std::string &port, std::string &host);
+  server(fral::FRAL *log, std::string &port, std::string &host, int startIdx);
 
   Status connect(ServerContext *context, const Empty *hello,
                  Start *start) override;
@@ -48,6 +48,8 @@ class server : public Medium::Service {
   void createServer();
 
   fral::FRAL *ral;
+
+  int startIdx;
 
   bool keepAlive = true;
 
