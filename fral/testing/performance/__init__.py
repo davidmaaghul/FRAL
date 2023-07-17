@@ -1,6 +1,6 @@
 import os
 
-TEST_PATH = "fral/testing/performance_tests"
+TEST_PATH = "fral/testing/performance"
 
 RELEASE_PATH = os.path.join("cmake-build-release", TEST_PATH)
 
