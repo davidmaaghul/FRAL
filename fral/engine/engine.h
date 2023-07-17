@@ -6,11 +6,11 @@
 
 struct Map {
   size_t heapStart;
-  size_t maxEntries;
+  int maxEntries;
   size_t maxMemory;
   std::atomic<size_t> heapNext;
   std::atomic<size_t> heapTotal;
-  std::atomic<size_t> indexNext;
+  std::atomic<int> indexNext;
   std::atomic<size_t> records[0];
 };
 
@@ -18,7 +18,7 @@ namespace fral {
 
 class FRAL {
  public:
-  FRAL(const char* fileName, size_t size, size_t maxEntries);
+  FRAL(const char* fileName, size_t maxMemory, int maxEntries);
 
   FRAL(const char* fileName);
 
@@ -26,13 +26,13 @@ class FRAL {
 
   virtual void* allocate(size_t sz);
 
-  ssize_t append(void* blob);
+  int append(void* blob);
 
-  void* load(size_t idx) const;
+  void* load(int idx) const;
 
-  size_t size() const;
+  int size() const;
 
-  size_t maxSize() const;
+  int maxSize() const;
 
   size_t memory() const;
 
