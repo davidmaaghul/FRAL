@@ -8,15 +8,15 @@ const size_t EMPTY_IDX = 0;
 
 namespace fral {
 
-FRAL::FRAL(const char* fileName, size_t size, size_t maxEntries)
+FRAL::FRAL(const char* fileName, size_t maxMemory, int maxEntries)
     : fileName(fileName) {
   auto admin = maxEntries * sizeof(size_t) + sizeof(Map);
-  createFile(size + admin + maxEntries*sizeof(size_t));
+  createFile(maxMemory + admin + maxEntries*sizeof(size_t));
   createMMRegion();
 
   map->heapStart = admin;
   map->maxEntries = maxEntries;
-  map->maxMemory = size;
+  map->maxMemory = maxMemory;
   map->heapNext.store(map->heapStart);
   map->heapTotal.store(0);
   map->indexNext.store(0);
@@ -77,7 +77,7 @@ void *FRAL::allocate(size_t sz) {
 }
 
 
-ssize_t FRAL::append(void* blob) {
+int FRAL::append(void* blob) {
   auto offset = (size_t)((char*)blob - (char*)map);
   auto empty_idx = EMPTY_IDX;
 
@@ -93,7 +93,7 @@ ssize_t FRAL::append(void* blob) {
   return -1;
 }
 
-void* FRAL::load(size_t idx) const {
+void* FRAL::load(int idx) const {
   if (idx >= map->maxEntries || map->records[idx] == EMPTY_IDX) {
     return nullptr;
   }
@@ -104,7 +104,7 @@ void* FRAL::operator[](size_t idx) const {
     return load(idx);
 }
 
-size_t FRAL::size() const {
+int FRAL::size() const {
   for (auto index = map->indexNext.load(); index < map->maxEntries; ++index) {
     if (map->records[index].load() == EMPTY_IDX) {
       return index;
@@ -113,7 +113,7 @@ size_t FRAL::size() const {
   return map->maxEntries;
 }
 
-size_t FRAL::maxSize() const {
+int FRAL::maxSize() const {
     return map->maxEntries;
 }
 
