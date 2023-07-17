@@ -4,7 +4,7 @@ import time
 import os
 import pandas as pd
 import multiprocessing as mp
-from fral.testing.performance_tests import RELEASE_PATH, BLOB_SIZES, TEST_PATH
+from fral.testing.performance import RELEASE_PATH, BLOB_SIZES, TEST_PATH
 import subprocess
 
 

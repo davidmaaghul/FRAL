@@ -55,3 +55,6 @@ class FRAL(object):
             return None
         b = fral_cpp.Bytes(blob)
         return b.read()
+
+    def __getitem__(self, idx):
+        return self.read(idx)

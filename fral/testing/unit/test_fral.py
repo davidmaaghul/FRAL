@@ -92,10 +92,25 @@ class Test(TestCase):
 
             idx = test.append(blob)
 
-            blob2 = test.read(idx)
+            blob2 = test[idx]
 
             self.assertEqual(b'5', blob2[0:1])
             self.assertEqual(b'6', blob2[50:51])
+
+    def test_read_brackets(self):
+        with tempfile.TemporaryDirectory() as tmp:
+
+            fname = os.path.join(tmp, "test.bin")
+
+            test = FRAL(fname, 1000, 100)
+            blob = test.allocate(100)
+
+            blob[0:1] = b'5'
+            blob[50:51] = b'6'
+
+            idx = test.append(blob)
+
+            self.assertEqual(test[idx], test.read(idx))
 
     def test_allocate_append_read_dataframe(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -127,7 +142,7 @@ class Test(TestCase):
             self.assertEqual(72200, test.memory())
 
             for i in range(100):
-                blob = test.read(i)
+                blob = test[i]
                 pd.testing.assert_frame_equal(all_dfs[i], pickle.loads(blob))
 
 

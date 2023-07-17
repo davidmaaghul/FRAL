@@ -5,7 +5,7 @@ import time
 import pandas as pd
 from multiprocessing import Pool
 from fral.python.fral.fral import FRAL
-from fral.testing.performance_tests import BLOB_SIZES, TEST_PATH, WRITERS, GB_TO_B
+from fral.testing.performance import BLOB_SIZES, TEST_PATH, WRITERS, GB_TO_B
 
 PC_TEST_CSV = "py_pc_test.csv"
 

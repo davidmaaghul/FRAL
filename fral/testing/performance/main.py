@@ -1,7 +1,7 @@
 import argparse
 import os
 
-from fral.testing.performance_tests import (
+from fral.testing.performance import (
     TEST_PATH,
     net_test,
     write_test,

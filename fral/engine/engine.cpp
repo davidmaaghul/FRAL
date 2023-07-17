@@ -9,24 +9,25 @@ const size_t EMPTY_IDX = 0;
 namespace fral {
 
 FRAL::FRAL(const char* fileName, size_t size, size_t maxEntries)
-    : maxEntries(maxEntries), fileName(fileName), maxSpace(size) {
+    : fileName(fileName) {
   auto admin = maxEntries * sizeof(size_t) + sizeof(Map);
   createFile(size + admin + maxEntries*sizeof(size_t));
   createMMRegion();
 
   map->heapStart = admin;
+  map->maxEntries = maxEntries;
+  map->maxMemory = size;
   map->heapNext.store(map->heapStart);
   map->heapTotal.store(0);
   map->indexNext.store(0);
 
-  for (int i = 0; i < maxEntries; i++) {
+  for (size_t i = 0; i < maxEntries; i++) {
     map->records[i].store(EMPTY_IDX);
   }
 }
 
 FRAL::FRAL(const char* fileName) : fileName(fileName) {
   createMMRegion();
-  maxEntries = (map->heapStart - sizeof(Map)) / sizeof(size_t);
 }
 
 void FRAL::primeCache() {
@@ -76,11 +77,11 @@ void *FRAL::allocate(size_t sz) {
 }
 
 
-int FRAL::append(void* blob) {
+ssize_t FRAL::append(void* blob) {
   auto offset = (size_t)((char*)blob - (char*)map);
   auto empty_idx = EMPTY_IDX;
 
-  for (auto index = map->indexNext.load(); index < maxEntries; index++) {
+  for (auto index = map->indexNext.load(); index < map->maxEntries; index++) {
     if (map->records[index].compare_exchange_weak(empty_idx, offset)) {
       map->indexNext.store(index + 1);
 
@@ -92,32 +93,36 @@ int FRAL::append(void* blob) {
   return -1;
 }
 
-void* FRAL::load(int idx) {
-  if (idx < 0 || idx >= maxEntries || map->records[idx] == EMPTY_IDX) {
+void* FRAL::load(size_t idx) const {
+  if (idx >= map->maxEntries || map->records[idx] == EMPTY_IDX) {
     return nullptr;
   }
   return ((char*)map) + map->records[idx];
 }
 
-int FRAL::size() {
-  for (auto index = map->indexNext.load(); index < maxEntries; ++index) {
+void* FRAL::operator[](size_t idx) const {
+    return load(idx);
+}
+
+size_t FRAL::size() const {
+  for (auto index = map->indexNext.load(); index < map->maxEntries; ++index) {
     if (map->records[index].load() == EMPTY_IDX) {
       return index;
     }
   }
-  return maxEntries;
+  return map->maxEntries;
 }
 
-int FRAL::maxSize() {
-    return maxEntries;
+size_t FRAL::maxSize() const {
+    return map->maxEntries;
 }
 
-size_t FRAL::memory() {
+size_t FRAL::memory() const {
     return map->heapTotal;
 }
 
-size_t FRAL::maxMemory() {
-    return maxSpace;
+size_t FRAL::maxMemory() const {
+    return map->maxMemory;
 }
 
 
