@@ -26,7 +26,7 @@ void listener(fral::server *server) { server->listenForKill(); }
 int main(int argc, char **argv) {
   gflags::ParseCommandLineFlags(&argc, &argv, false);
 
-    auto entries = create(FLAGS_size, FLAGS_bin_name, FLAGS_gib, FLAGS_entries);
+  auto entries = create(FLAGS_size, FLAGS_bin_name, FLAGS_gib, FLAGS_entries);
 
   auto pid = fork();
 
@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
 
   auto ralS = fral::FRAL(FLAGS_bin_name.c_str());
   ralS.primeCache();
-  auto receiver = new fral::server(&ralS, FLAGS_port, HOST);
+  auto receiver = new fral::server(&ralS, FLAGS_port, HOST, 0);
   std::thread listen(&listener, receiver);
   receiver->run();
   listen.join();
