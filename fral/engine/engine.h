@@ -42,7 +42,7 @@ class FRAL {
 
   void primeCache();
 
-  void* operator[](size_t idx) const;
+  void* operator[](int idx) const;
 
  protected:
   boost::interprocess::mapped_region* mappedRegion{};
