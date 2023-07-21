@@ -100,7 +100,7 @@ void* FRAL::load(int idx) const {
   return ((char*)map) + map->records[idx];
 }
 
-void* FRAL::operator[](size_t idx) const {
+void* FRAL::operator[](int idx) const {
     return load(idx);
 }
 

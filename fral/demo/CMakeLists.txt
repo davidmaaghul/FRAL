@@ -1,0 +1,2 @@
+add_executable(cpp_runner cpp_runner.cpp)
+target_link_libraries(cpp_runner fral_engine)
