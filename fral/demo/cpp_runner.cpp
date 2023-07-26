@@ -3,7 +3,7 @@
 
 
 const char *BIN_NAME = "demo.bin";
-const int ENTRIES = 5;
+const int ENTRIES = 6;
 
 int main(){
 
@@ -20,8 +20,10 @@ int main(){
             auto write_blob = (int *) ral.allocate(sizeof(int));
             *write_blob = *read_blob + 1;
             std::cout << "sending " << *write_blob << "!" << std::endl;
-            ral.append(write_blob);
-            idx+=2;
+            idx = ral.append(write_blob) + 1;
+            if(idx == ENTRIES){
+                break;
+            }
         }
     }
 

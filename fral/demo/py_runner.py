@@ -8,7 +8,7 @@ BIN_NAME = "demo.bin"
 
 RELEASE_PATH = os.path.join("cmake-build-release", "fral", "demo")
 
-ENTRIES = 5
+ENTRIES = 6
 
 
 def main():
