@@ -12,7 +12,7 @@ int main(){
     for(int idx = 0;;){
         auto read_blob = (int *) ral.load(idx);
         if(read_blob){
-            std::cout << "C++ received index "<< idx << " with value " << *read_blob << " from Python, ";
+            std::cout << "C++ received " << *read_blob << " from Python, ";
             if(idx == ENTRIES - 1){
                 std::cout << "done!" << std::endl;
                 break;

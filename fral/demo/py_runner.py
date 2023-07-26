@@ -32,7 +32,7 @@ def main():
 
         if read_blob:
             val = struct.unpack('i', read_blob[:int_size])[0]
-            print(f"Python received index {idx} with value {val} from C++, ", end="")
+            print(f"Python received {val} from C++, ", end="")
 
             if idx == ENTRIES - 1:
                 print("done!")
