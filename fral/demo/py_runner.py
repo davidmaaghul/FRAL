@@ -8,7 +8,7 @@ BIN_NAME = "demo.bin"
 
 RELEASE_PATH = os.path.join("cmake-build-release", "fral", "demo")
 
-ENTRIES = 10
+ENTRIES = 5
 
 
 def main():
@@ -21,10 +21,10 @@ def main():
 
     subprocess.Popen([f"./{RELEASE_PATH}/cpp_runner"])
 
+    print(f"Python sending {val} to C++!")
     blob = ral.allocate(int_size)
     blob[:int_size] = val_bytes
-    ral.append(blob)
-    idx = 1
+    idx = ral.append(blob) + 1
 
     while True:
 
@@ -32,16 +32,20 @@ def main():
 
         if read_blob:
             val = struct.unpack('i', read_blob[:int_size])[0]
-            print(f"Python received {val} from C++!")
+            print(f"Python received index {idx} with value {val} from C++, ", end="")
 
-            if val == ENTRIES:
+            if idx == ENTRIES - 1:
+                print("done!")
                 break
 
             write_blob = ral.allocate(int_size)
-            write_blob[:int_size] = struct.pack('i', val + 1)
-            ral.append(write_blob)
+            send_val = val + 1
+            write_blob[:int_size] = struct.pack('i', send_val)
+            print(f"sending {send_val}!")
+            idx = ral.append(write_blob) + 1
 
-            idx += 2
+            if idx == ENTRIES:
+                break
 
     os.remove(BIN_NAME)
 
