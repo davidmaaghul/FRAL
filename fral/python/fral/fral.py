@@ -49,12 +49,13 @@ class FRAL(object):
     def append(self, arr: memoryview) -> int:
         return self._ral.append(fral_cpp.memoryview_to_pointer(arr))
 
-    def read(self, idx) -> Optional[memoryview]:
+    def read(self, idx: int) -> Optional[memoryview]:
         blob = self._ral.load(idx)
         if not blob:
             return None
         b = fral_cpp.Bytes(blob)
         return b.read()
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx: int) -> Optional[memoryview]:
+
         return self.read(idx)
