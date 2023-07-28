@@ -6,7 +6,7 @@ Python bindings have also been provided for higher level and less peformance con
 struct library can easily extend the log to a language-agnostic shared memory framework, as demonstrated [here](./fral/demo). 
 Early workings for syncing FRALs over standard networking (using gRPC and Protobuf) in a non-intrusive and reliable way are also provided.
 
-For more detail on the implementation and performance, see [this presentation](./misc/Fast_Random_Access_Log.pdf).
+For more detail on the implementation and performance, see [this presentation](./misc/FRAL.pdf).
 
 
 ## Example Usage
