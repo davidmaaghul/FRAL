@@ -4,8 +4,14 @@
 #include <atomic>
 #include <boost/interprocess/mapped_region.hpp>
 
+//assert atomic is address free for architecture
+
+static_assert(std::atomic<int>::is_always_lock_free);
+static_assert(std::atomic<size_t>::is_always_lock_free);
+
 struct Map {
   size_t heapStart;
+  size_t memorySize;
   int maxEntries;
   size_t maxMemory;
   std::atomic<size_t> heapNext;
@@ -13,6 +19,7 @@ struct Map {
   std::atomic<int> indexNext;
   std::atomic<size_t> records[0];
 };
+
 
 namespace fral {
 

@@ -1,5 +1,4 @@
 #include "engine.h"
-
 #include <boost/interprocess/file_mapping.hpp>
 #include <fstream>
 #include <iostream>
@@ -17,6 +16,7 @@ FRAL::FRAL(const char* fileName, size_t maxMemory, int maxEntries)
   map->heapStart = admin;
   map->maxEntries = maxEntries;
   map->maxMemory = maxMemory;
+  map->memorySize = mappedRegion->get_size();
   map->heapNext.store(map->heapStart);
   map->heapTotal.store(0);
   map->indexNext.store(0);
@@ -58,13 +58,9 @@ void FRAL::createMMRegion() {
 
 void *FRAL::allocate(size_t sz) {
 
-    if (sz == 0) {
-        return nullptr;
-    }
-
     auto currentEntry = map->heapNext.fetch_add(sz + sizeof(size_t *));
 
-    if (currentEntry + sz + sizeof(size_t *) > mappedRegion->get_size()) {
+    if (currentEntry + sz + sizeof(size_t *) > map->memorySize) {
         return nullptr;
     }
 
@@ -94,7 +90,7 @@ int FRAL::append(void* blob) {
 }
 
 void* FRAL::load(int idx) const {
-  if (idx >= map->maxEntries || map->records[idx] == EMPTY_IDX) {
+  if (map->records[idx].load() == EMPTY_IDX) {
     return nullptr;
   }
   return ((char*)map) + map->records[idx];
