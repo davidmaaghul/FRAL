@@ -49,10 +49,8 @@ void FRAL::createFile(long long size) {
 }
 
 void FRAL::createMMRegion() {
-  boost::interprocess::file_mapping m_file(fileName,
-                                           boost::interprocess::read_write);
-  mappedRegion = new boost::interprocess::mapped_region(
-      m_file, boost::interprocess::read_write);
+  boost::interprocess::file_mapping m_file(fileName, boost::interprocess::read_write);
+  mappedRegion = new boost::interprocess::mapped_region(m_file, boost::interprocess::read_write);
   map = (Map*)mappedRegion->get_address();
 }
 
@@ -60,7 +58,7 @@ void *FRAL::allocate(size_t sz) {
 
     auto currentEntry = map->heapNext.fetch_add(sz + sizeof(size_t *));
 
-    if (currentEntry + sz + sizeof(size_t *) > map->memorySize) {
+    if (__builtin_expect(currentEntry + sz + sizeof(size_t *) > map->memorySize, false)) {
         return nullptr;
     }
 
@@ -80,10 +78,8 @@ int FRAL::append(void* blob) {
   for (auto index = map->indexNext.load(); index < map->maxEntries; index++) {
     if (map->records[index].compare_exchange_weak(empty_idx, offset)) {
       map->indexNext.store(index + 1);
-
       return index;
     }
-
     empty_idx = EMPTY_IDX;  // EMPTY_IDX was updated
   }
   return -1;

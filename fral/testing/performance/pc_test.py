@@ -28,12 +28,12 @@ def spawn_test(writers: int, blob_size: int, csv_name: str, bin_name: str):
     sp.wait()
 
 
-def main():
+def main(sqlite: bool = False):
     if not os.path.exists(results := os.path.join(TEST_PATH, "test-results")):
         os.mkdir(results)
 
     output_df = pd.DataFrame()
-    print("Starting producer-consumer test...")
+    print(f"{'SQLite ' if sqlite else ''}Starting producer-consumer test...")
     for writers in WRITERS:
         for blob_size in BLOB_SIZES:
             with tempfile.TemporaryDirectory() as tmp:
