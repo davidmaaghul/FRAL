@@ -1,6 +1,4 @@
 cmake_minimum_required(VERSION 3.18...3.22)
-set(CMAKE_C_COMPILER "/usr/bin/gcc")
-set(CMAKE_CXX_COMPILER  "/usr/bin/g++")
 
 project(FRAL C CXX)
 

@@ -7,6 +7,7 @@ from fral.testing.performance import (
     write_test,
     pc_test,
     py_test,
+    append_test
 )
 
 
@@ -20,6 +21,9 @@ def main():
         os.makedirs(results_path)
 
     args = get_args()
+
+    if args.append_test:
+        append_test.main()
 
     if args.net_test:
         net_test.main()
@@ -47,6 +51,9 @@ def get_args():
     )
     arg_parser.add_argument(
         "-n", "--net_test", dest="net_test", action="store_true", default=False
+    )
+    arg_parser.add_argument(
+        "-a", "--append_test", dest="append_test", action="store_true", default=False
     )
 
     return arg_parser.parse_args()

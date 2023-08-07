@@ -4,7 +4,6 @@ cmake -DCMAKE_BUILD_TYPE=Release -S . -B cmake-build-release -DCMAKE_VERBOSE_MAK
 cmake --build cmake-build-release \
 --config release \
 --target \
-server \
 write_test \
 fral_ext \
 pc_test -j 4

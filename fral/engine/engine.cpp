@@ -56,12 +56,11 @@ void FRAL::createMMRegion() {
 
 void *FRAL::allocate(size_t sz) {
 
-    auto currentEntry = map->heapNext.fetch_add(sz + sizeof(size_t *));
-
-    if (__builtin_expect(currentEntry + sz + sizeof(size_t *) > map->memorySize, false)) {
+    if (map->heapNext + sz + sizeof(size_t *) > map->memorySize) {
         return nullptr;
     }
 
+    auto currentEntry = map->heapNext.fetch_add(sz + sizeof(size_t *));
     map->heapTotal.fetch_add(sz);
 
     char *currentAddress = ((char *)map) + currentEntry;
