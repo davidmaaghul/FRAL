@@ -1,12 +1,16 @@
 # Fast Random Access Log (FRAL)
 FRAL is a concurrency-friendly log structure allocated over shared memory. Reads are random access and writes
 are non-blocking. The current shared-memory framework uses memory-mapped files. The core engine is written in C++ and 
-Python bindings have also been provided for higher level and less performance constrained usage. Utilizing Python's 
+Python bindings are provided for higher level and less performance-constrained usage. Utilizing Python's 
 struct library can easily extend the log to a language-agnostic shared memory framework, as demonstrated [here](./fral/demo). 
 Early workings for syncing FRALs over standard networking (using gRPC and Protobuf) in a non-intrusive and reliable way are also provided.
-In order to normalize virtual memory addressing, allocation offsets from the start of the contiguous shared-memory space are 
-stored in a fixed-size array:
+To normalize virtual memory addressing, allocation offsets from the start of the contiguous shared-memory space are 
+stored in a fixed-sized array (see below).
 
+![offset diagram](./misc/offsets.png)
+
+The FRAL engine saw a ~60x performance multiple over a [similar interface](./fral/testing/performance/engine_sqlite.h) 
+written with SQLite.
 
 For more detail on the implementation and performance, see [this presentation](./misc/FRAL.pdf).
 
@@ -25,7 +29,7 @@ DEST
 auto ralA = fral::FRAL("test.bin");
 const char *TEST_STR = "TEST";
 
-auto blob = (char *) ralA.allocate(strlen(TEST_STR));
+auto blob = (char *) ralA.allocate(strlen(TEST_STR) + 1);
 strcpy(blob, TEST_STR);
 printf("%s\n", blob);
 
@@ -77,14 +81,12 @@ print(bytes(test_blob3).decode())
 ```
 ### Performance Testing
 #### Single Process Write Performance (1GB)
-Testing the performance of writing 1GB with various allocation sizes with only one writer:
+Testing the performance of writing 1GB with various allocation sizes and only one writer:
 ![Single Process Write Performance](./misc/write_test.png)
 #### Multiprocess Write and Read Performance
 Testing the performance of writing and reading 1GB with various allocation 
 sizes and multiple writers:
-
 ![Producer-ConsumerLatency](./misc/pc_test_latency.png)
-
 ![Producer-ConsumerThroughput](./misc/pc_test_throughput.png)
 
 

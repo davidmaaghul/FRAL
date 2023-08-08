@@ -9,7 +9,7 @@
 
 namespace fral {
 
-FRAL::FRAL(const char *fileName, size_t maxMemory, size_t maxEntries)
+FRAL::FRAL(const char *fileName, size_t maxMemory, unsigned int maxEntries)
     : fileName(fileName) {
   auto admin = maxEntries * sizeof(size_t) + sizeof(Map);
   createFile(maxMemory + admin + maxEntries * sizeof(size_t));
@@ -91,7 +91,7 @@ void *FRAL::allocate(size_t sz) {
   return currentAddress + sizeof(size_t *);
 }
 
-int FRAL::append(void *blob) {
+unsigned int FRAL::append(void *blob) {
   auto offset = (size_t)((char *)blob - (char *)map);
   size_t empty_idx = EMPTY_IDX;
 
@@ -105,7 +105,7 @@ int FRAL::append(void *blob) {
   return -1;
 }
 
-void *FRAL::load(int idx) const {
+void *FRAL::load(unsigned int idx) const {
   size_t empty_idx = EMPTY_IDX;
   if (map->records[idx].load() == empty_idx) {
     return nullptr;
@@ -113,7 +113,7 @@ void *FRAL::load(int idx) const {
   return ((char *)map) + map->records[idx];
 }
 
-void *FRAL::operator[](int idx) const { return load(idx); }
+void *FRAL::operator[](unsigned int idx) const { return load(idx); }
 
 size_t FRAL::size() const {
   size_t empty_idx = EMPTY_IDX;
@@ -125,7 +125,7 @@ size_t FRAL::size() const {
   return map->maxEntries;
 }
 
-size_t FRAL::maxSize() const { return map->maxEntries; }
+unsigned int FRAL::maxSize() const { return map->maxEntries; }
 
 size_t FRAL::maxMemory() const { return map->maxMemory; }
 

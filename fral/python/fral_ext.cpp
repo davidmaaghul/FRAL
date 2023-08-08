@@ -28,7 +28,7 @@ void *memoryview_to_pointer(memoryview *bytearr) { return bytearr->c_str(); }
 
 NB_MODULE(fral_ext, m) {
   nb::class_<fral::FRAL>(m, "FRAL")
-      .def(nb::init<const char *, size_t, size_t>(), nb::rv_policy::reference)
+      .def(nb::init<const char *, size_t, unsigned int>(), nb::rv_policy::reference)
       .def(nb::init<const char *>(), nb::rv_policy::reference)
       .def("allocate", &fral::FRAL::allocate)
       .def("append", &fral::FRAL::append)
