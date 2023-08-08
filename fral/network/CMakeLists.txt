@@ -1,5 +1,4 @@
-set(protobuf_MODULE_COMPATIBLE TRUE)
-find_package(Protobuf CONFIG REQUIRED)
+set(protobuf_MODULE_COMPATIBLE FALSE)
 message(STATUS "Using protobuf ${Protobuf_VERSION}")
 
 set(_PROTOBUF_LIBPROTOBUF protobuf::libprotobuf)
@@ -45,11 +44,11 @@ target_link_libraries(medium_grpc_proto
         ${_GRPC_GRPCPP}
         ${_PROTOBUF_LIBPROTOBUF})
 
-add_library(network server.cpp client.cpp)
-
-target_link_libraries(network
-        medium_grpc_proto
-        ${_GRPC_GRPCPP}
-        ${_PROTOBUF_LIBPROTOBUF}
-        fral_engine
-        )
+#add_library(network server.cpp client.cpp)
+#
+#target_link_libraries(network
+#        medium_grpc_proto
+#        ${_GRPC_GRPCPP}
+#        ${_PROTOBUF_LIBPROTOBUF}
+#        fral_engine
+#        )

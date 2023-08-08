@@ -7,7 +7,7 @@ int main() {
     auto ralA = fral::FRAL("test.bin", 1000, 10);
     const char *TEST_STR = "TEST";
 
-    auto blob = (char *) ralA.allocate(strlen(TEST_STR));
+    auto blob = (char *) ralA.allocate(strlen(TEST_STR) + 1);
     strcpy(blob, TEST_STR);
     printf("%s\n", blob);
 

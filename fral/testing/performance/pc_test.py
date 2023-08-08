@@ -11,10 +11,13 @@ from fral.testing.performance import (
 )
 
 
-def spawn_test(writers: int, blob_size: int, csv_name: str, bin_name: str):
+def spawn_test(gib: float, writers: int, blob_size: int, csv_name: str, bin_name: str, sqlite: bool = False):
+
     sp = subprocess.Popen(
         [
-            os.path.join(RELEASE_PATH, "pc_test"),
+            os.path.join(RELEASE_PATH, f"pc_test{'_sqlite' if sqlite else ''}"),
+            "--gib",
+            str(gib),
             "--size",
             str(blob_size),
             "--bin_name",
@@ -28,25 +31,33 @@ def spawn_test(writers: int, blob_size: int, csv_name: str, bin_name: str):
     sp.wait()
 
 
-def main():
+def main(sqlite: bool = False, gib: float = 1, subdir: str = None):
     if not os.path.exists(results := os.path.join(TEST_PATH, "test-results")):
         os.mkdir(results)
 
     output_df = pd.DataFrame()
-    print("Starting producer-consumer test...")
+    print(f"Starting producer-consumer test...")
     for writers in WRITERS:
         for blob_size in BLOB_SIZES:
             with tempfile.TemporaryDirectory() as tmp:
                 print(
-                    f"Starting producer-consumer test for blob_size={blob_size}, writers={writers}"
+                    f"Starting {'SQLite ' if sqlite else ''}"
+                    f"producer-consumer test for blob_size={blob_size}, writers={writers}"
                 )
-                bin_name = os.path.join(tmp, "pc-test.bin")
-                csv_name = os.path.join(tmp, "pc-test.csv")
-                spawn_test(writers, blob_size, csv_name, bin_name)
+                bin_name = os.path.join(tmp, f"pc-test{'-sqlite.db' if sqlite else '.bin'}")
+                csv_name = os.path.join(tmp, f"pc-test{'-sqlite' if 'sqlite' else ''}.csv")
+                spawn_test(gib, writers, blob_size, csv_name, bin_name, sqlite)
                 sub_df = pd.read_csv(csv_name)
                 output_df = pd.concat([output_df, sub_df])
 
-    output_df.to_csv(os.path.join(TEST_PATH, "test-results", "pc_test.csv"), index=False)
+    file_name = f"pc_test{'_sqlite' if sqlite else ''}.csv"
+
+    if subdir:
+        file_path = os.path.join(subdir, file_name)
+    else:
+        file_path = file_name
+
+    output_df.to_csv(os.path.join(TEST_PATH, "test-results", file_path), index=False)
     print("Producer-consumer test complete")
 
 

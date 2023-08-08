@@ -26,17 +26,19 @@ using grpc::Status;
 namespace fral {
 
 class server : public Medium::Service {
- public:
+public:
   server(fral::FRAL *log, std::string &port, std::string &host, int startIdx);
 
-  Status connect(ServerContext *context, const Empty *hello,
-                 Start *start) override;
+  Status connect(ServerContext *context, const Empty *hello, Start *start)
+      override;
 
-  Status sync(ServerContext *context, ServerReader<Allocation> *stream,
-              Empty *complete) override;
+  Status sync(
+      ServerContext *context,
+      ServerReader<Allocation> *stream,
+      Empty *complete) override;
 
-  Status shutdown(ServerContext *context, const Empty *finish,
-                  Empty *ok) override;
+  Status shutdown(ServerContext *context, const Empty *finish, Empty *ok)
+      override;
 
   void run();
 
@@ -44,7 +46,7 @@ class server : public Medium::Service {
 
   int shutdown();
 
- protected:
+protected:
   void createServer();
 
   fral::FRAL *ral;
@@ -62,7 +64,6 @@ class server : public Medium::Service {
   std::string port;
 
   std::unique_ptr<Server> server_;
-
 };
 
 }  // namespace fral

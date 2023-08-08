@@ -1,16 +1,25 @@
+#include <chrono>
 #include <fstream>
 #include <iostream>
 
+#include "engine_sqlite.h"
 #include "gflags/gflags.h"
-#include "utility.h"
+#include <unistd.h>
 
-DEFINE_int32(gib, 1, "Provide number of GiB to test");
+using namespace std::chrono;
+
+DEFINE_double(gib, 1, "Provide number of GB to test");
 DEFINE_int32(size, 100, "Enter size of entries");
 DEFINE_int32(writers, 1, "Enter number of writers");
-DEFINE_string(bin_name, "pc-test.bin", "Provide bin name");
-DEFINE_string(csv_name, "pc-test.csv", "Provide csv name for test results");
+DEFINE_string(bin_name, "pc-test2.db", "Provide bin name");
+DEFINE_string(csv_name, "pc-test2.csv", "Provide csv name for test results");
 
-void test_runner(size_t entries){
+int main(int argc, char **argv) {
+    gflags::ParseCommandLineFlags(&argc, &argv, false);
+    FRAL_SQLITE(FLAGS_bin_name.c_str(), true);
+    auto totalSize = static_cast<size_t>(FLAGS_gib * 1000000000);
+    auto entries = totalSize / FLAGS_size;
+
     assert(entries % FLAGS_writers == 0);
     auto writerEntries = entries / FLAGS_writers;
 
@@ -20,14 +29,12 @@ void test_runner(size_t entries){
     for (int process = 0; process < FLAGS_writers + 1; process++) {
         pid = fork();
         if (pid == 0) {
-            auto ral = fral::FRAL(FLAGS_bin_name.c_str());
-            ral.primeCache();
+            auto ral = FRAL_SQLITE(FLAGS_bin_name.c_str());
             // reader
             if (process == 0) {
                 std::cout << "Starting Reader" << std::endl;
-
                 for (int i = 0; i < entries;) {
-                    auto blob = ral.load(i);
+                    auto blob = ral.load(i + 1);
                     if (blob) {
                         std::memcpy(buffer, blob, FLAGS_size);
                         i++;
@@ -38,17 +45,19 @@ void test_runner(size_t entries){
                 high_resolution_clock::time_point start = stop;
                 for (int i = 0; i < entries; i++) {
                     // get the first writer timestamp (yes this could be more eloquent)
-                    auto start_ = (high_resolution_clock::time_point *)ral.load(i);
+                    auto start_ = (high_resolution_clock::time_point *) ral.load(1);
                     if (*start_ < start) {
                         start = *start_;
                     }
                 }
                 std::ofstream csvFile(FLAGS_csv_name);
                 auto duration = duration_cast<nanoseconds>(stop - start).count();
+                std::cout << "Finished Reader" << std::endl;
                 csvFile << "Time,Entries,Writers,Size" << std::endl;
                 csvFile << duration << "," << entries << "," << FLAGS_writers << ","
                         << FLAGS_size << std::endl;
                 csvFile.close();
+
                 std::cout << "Finished PC Test ~" << duration / entries << "ns"
                           << std::endl;
             } else {
@@ -59,9 +68,7 @@ void test_runner(size_t entries){
                         high_resolution_clock::now();
 
                 for (int i = 0; i < writerEntries; i++) {
-                    auto blob = ral.allocate(FLAGS_size);
-                    std::memcpy(blob, buffer, FLAGS_size);
-                    ral.append(blob);
+                    ral.append(buffer, FLAGS_size);
                 }
                 std::cout << "Finished Writer " << process << std::endl;
             }
@@ -71,11 +78,4 @@ void test_runner(size_t entries){
     for (int process = 0; process < FLAGS_writers + 1; process++) {
         wait(nullptr);
     }
-}
-
-int main(int argc, char **argv) {
-  gflags::ParseCommandLineFlags(&argc, &argv, false);
-
-  auto entries = create(FLAGS_size, FLAGS_bin_name, FLAGS_gib);
-  test_runner(entries);
 }

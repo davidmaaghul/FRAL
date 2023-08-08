@@ -7,7 +7,7 @@
 
 using namespace std::chrono;
 
-DEFINE_int32(gib, 1, "Provide number of GiB to test");
+DEFINE_double(gib, 1, "Provide number of GiB to test");
 DEFINE_int32(size, 100, "Provide entry size in bytes");
 DEFINE_string(bin_name, "write-test.bin", "Provide bin name");
 DEFINE_string(csv_name, "write-test.csv", "Provide csv name");
