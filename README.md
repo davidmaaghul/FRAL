@@ -2,7 +2,7 @@
 FRAL is a concurrency-friendly log structure allocated over shared memory. Reads are random access and writes
 are non-blocking. The current shared-memory framework uses memory-mapped files. The core engine is written in C++ and 
 Python bindings are provided for higher level and less performance-constrained usage. Utilizing Python's 
-struct library can easily extend the log to a language-agnostic shared memory framework, as demonstrated [here](./fral/demo). 
+struct library can easily extend the log to a language-agnostic shared memory framework as demonstrated [here](./fral/demo). 
 Early workings for syncing FRALs over standard networking (using gRPC and Protobuf) in a non-intrusive and reliable way are also provided.
 To normalize virtual memory addressing, allocation offsets from the start of the contiguous shared-memory space are 
 stored in a fixed-sized array (see below).

@@ -10,9 +10,9 @@
 #define MAX_ALLOCATION (1ul << 40)
 #define MAX_CLIENTS (1ul << 20)
 
-
 // assert atomic is address free for architecture
 
+static_assert(std::atomic<unsigned int>::is_always_lock_free);
 static_assert(std::atomic<size_t>::is_always_lock_free);
 static_assert(std::numeric_limits<size_t>::max() > MEMORY_LOWER_BOUND);
 static_assert(std::numeric_limits<unsigned int>::max() > ENTRIES_LOWER_BOUND);
