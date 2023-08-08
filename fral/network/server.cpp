@@ -9,17 +9,26 @@
 
 namespace fral {
 
-server::server(fral::FRAL *ral, std::string &port, std::string &host, int startIdx)
-    : ral(ral), port(port), startIdx(startIdx), host(host) {}
+server::server(
+    fral::FRAL *ral,
+    std::string &port,
+    std::string &host,
+    int startIdx)
+    : ral(ral),
+      port(port),
+      startIdx(startIdx),
+      host(host) {}
 
-Status server::connect(ServerContext *context, const Empty *hello,
-                       Start *start) {
+Status
+server::connect(ServerContext *context, const Empty *hello, Start *start) {
   start->set_idx(startIdx);
   return Status::OK;
 }
 
-Status server::sync(ServerContext *context, ServerReader<Allocation> *stream,
-                    Empty *complete) {
+Status server::sync(
+    ServerContext *context,
+    ServerReader<Allocation> *stream,
+    Empty *complete) {
   Allocation alloc;
   while (stream->Read(&alloc)) {
     auto blob = (char *)ral->allocate(alloc.allocation().size());
@@ -37,8 +46,8 @@ void server::createServer() {
   server_ = std::unique_ptr<Server>(builder.BuildAndStart());
 }
 
-Status server::shutdown(ServerContext *context, const Empty *finish,
-                        Empty *ok) {
+Status
+server::shutdown(ServerContext *context, const Empty *finish, Empty *ok) {
   keepAlive = false;
   cv.notify_one();
   return Status::OK;

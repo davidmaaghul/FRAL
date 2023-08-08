@@ -7,11 +7,9 @@
 DEFINE_int32(gib, 1, "Provide number of GiB to test");
 DEFINE_int32(size, 100, "Enter size of entries");
 DEFINE_int32(writers, 1, "Enter number of writers");
-DEFINE_bool(fral2, false, "Enter number of writers");
 DEFINE_string(bin_name, "pc-test.bin", "Provide bin name");
 DEFINE_string(csv_name, "pc-test.csv", "Provide csv name for test results");
 
-template <class T>
 void test_runner(size_t entries){
     assert(entries % FLAGS_writers == 0);
     auto writerEntries = entries / FLAGS_writers;
@@ -22,7 +20,7 @@ void test_runner(size_t entries){
     for (int process = 0; process < FLAGS_writers + 1; process++) {
         pid = fork();
         if (pid == 0) {
-            auto ral = T(FLAGS_bin_name.c_str());
+            auto ral = fral::FRAL(FLAGS_bin_name.c_str());
             ral.primeCache();
             // reader
             if (process == 0) {
@@ -78,14 +76,6 @@ void test_runner(size_t entries){
 int main(int argc, char **argv) {
   gflags::ParseCommandLineFlags(&argc, &argv, false);
 
-  auto entries = create(FLAGS_size, FLAGS_bin_name, FLAGS_gib, 0, FLAGS_fral2);
-
-  if(FLAGS_fral2){
-      test_runner<fral::FRAL2>(entries);
-  }
-  else{
-      test_runner<fral::FRAL>(entries);
-  }
-
-
+  auto entries = create(FLAGS_size, FLAGS_bin_name, FLAGS_gib);
+  test_runner(entries);
 }

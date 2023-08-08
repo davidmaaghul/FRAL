@@ -16,7 +16,7 @@ class FRAL_SQLITE {
             if(create){
                 sqlite3_exec(db, CREATE, nullptr, nullptr, nullptr);
             }
-
+            sqlite3_exec(db, "PRAGMA journal_mode = WAL;", nullptr, nullptr, nullptr);
             sql_prepare(INSERT, ins_stmt);
             sql_prepare(SELECT, sel_stmt);
 
@@ -32,7 +32,7 @@ class FRAL_SQLITE {
             }
         }
 
-        void sql_bind_blob(void * blob, int sz){
+        void sql_bind_blob(const void * blob, int sz){
             if(sqlite3_bind_blob(ins_stmt, 1, blob, sz, SQLITE_STATIC) != SQLITE_OK){
                 std::cerr << "Insert bind error!" << std::endl;
                 exit(1);
@@ -69,12 +69,21 @@ class FRAL_SQLITE {
             }
         }
 
-        void append(void* blob, int sz){
+        void append(const void* blob, int sz){
 
             sql_bind_blob(blob, sz);
             execute(ins_stmt);
             sqlite3_reset(ins_stmt);
+            sqlite3_clear_bindings(ins_stmt);
+        }
 
+        void print_all(int stop) {
+            for(int i = 0; i < stop; i++){
+                auto blob = load(i);
+                if(blob){
+                    std::cout << i << "," <<  *(char *) load(i) << std::endl;
+                }
+            }
         }
 
         void *load(int idx) {
@@ -87,6 +96,7 @@ class FRAL_SQLITE {
                 auto blob = malloc(blobSize);
                 memcpy(blob, sqlite3_column_blob(sel_stmt, 0), blobSize);
                 sqlite3_reset(sel_stmt);
+                sqlite3_clear_bindings(sel_stmt);
                 return blob;
             }
 

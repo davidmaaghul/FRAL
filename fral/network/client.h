@@ -16,7 +16,7 @@ using medium::Medium;
 namespace fral {
 
 class client {
- public:
+public:
   client(fral::FRAL *log, const std::string &port, const std::string &host);
 
   int connect();
@@ -25,7 +25,7 @@ class client {
 
   int shutdown();
 
- protected:
+protected:
   std::unique_ptr<Medium::Stub> stub;
   std::shared_ptr<Channel> channel;
   std::string name;

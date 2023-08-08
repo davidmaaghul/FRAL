@@ -20,7 +20,6 @@ TEST_F(FRALTest, TEST_INIT){
     SetUp(1000, 10);
     ASSERT_EQ(0, test->size());
     ASSERT_EQ(10, test->maxSize());
-    ASSERT_EQ(0, test->memory());
     ASSERT_EQ(1000, test->maxMemory());
 }
 
@@ -29,17 +28,9 @@ TEST_F(FRALTest, TEST_CONNECT){
     fral::FRAL test2(BIN_NAME);
     ASSERT_EQ(0, test2.size());
     ASSERT_EQ(10, test2.maxSize());
-    ASSERT_EQ(0, test2.memory());
     ASSERT_EQ(1000, test2.maxMemory());
 }
 
-TEST_F(FRALTest, TEST_ALLOCATE){
-    SetUp(1000, 10);
-    test->allocate(10);
-    test->allocate(60);
-    test->allocate(80);
-    ASSERT_EQ(150, test->memory());
-}
 
 TEST_F(FRALTest, TEST_ALLOCATE_FAIL){
     SetUp(1000, 10);
@@ -115,7 +106,6 @@ TEST_F(FRALTest, TEST_ALLOCATE_APPEND_READ_STRUCT){
     }
 
     ASSERT_EQ(100, test->size());
-    ASSERT_EQ(sizeof(testData)*100, test->memory());
 
     for(size_t k = 0; k < 100; k++){
         auto blob1 = testVec[k];

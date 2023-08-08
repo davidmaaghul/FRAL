@@ -15,7 +15,6 @@ class Test(TestCase):
             test = FRAL(fname, 1000, 100)
             self.assertEqual(0, test.size())
             self.assertEqual(100, test.max_size())
-            self.assertEqual(0, test.memory())
             self.assertEqual(1000, test.max_memory())
 
     def test_connect(self):
@@ -25,7 +24,6 @@ class Test(TestCase):
             test = FRAL(fname)
             self.assertEqual(0, test.size())
             self.assertEqual(100, test.max_size())
-            self.assertEqual(0, test.memory())
             self.assertEqual(1000, test.max_memory())
 
     def test_prime_cache(self):
@@ -37,22 +35,12 @@ class Test(TestCase):
                 test_fral_cpp.FRAL.assert_called()
                 test_fral_cpp.FRAL.return_value.prime_cache.assert_called()
 
-    def test_allocate(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            fname = os.path.join(tmp, "test.bin")
-            test = FRAL(fname, 1000, 100)
-            test.allocate(10)
-            test.allocate(60)
-            test.allocate(80)
-            self.assertEqual(150, test.memory())
-
     def test_allocate_fail(self):
         with tempfile.TemporaryDirectory() as tmp:
             fname = os.path.join(tmp, "test.bin")
             test = FRAL(fname, 1000, 100)
             blob = test.allocate(1801)
             self.assertEqual(None, blob)
-            self.assertEqual(0, test.memory())
 
     def test_append(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -139,7 +127,6 @@ class Test(TestCase):
                 i += 1
 
             self.assertEqual(100, test.size())
-            self.assertEqual(72200, test.memory())
 
             for i in range(100):
                 blob = test[i]

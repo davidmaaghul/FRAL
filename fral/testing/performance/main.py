@@ -7,7 +7,8 @@ from fral.testing.performance import (
     write_test,
     pc_test,
     py_test,
-    append_test
+    SQLITE_SZ,
+    SQLITE_DIR
 )
 
 
@@ -22,9 +23,6 @@ def main():
 
     args = get_args()
 
-    if args.append_test:
-        append_test.main()
-
     if args.net_test:
         net_test.main()
 
@@ -36,6 +34,21 @@ def main():
 
     if args.py_test:
         py_test.main()
+
+    if args.sqlite_tests:
+
+        if not os.path.exists(
+                sqlite_path := os.path.join(
+                    results_path, SQLITE_DIR
+                )
+        ):
+            os.makedirs(sqlite_path)
+
+        write_test.main(gib=SQLITE_SZ, subdir=SQLITE_DIR)
+        write_test.main(sqlite=True, gib=SQLITE_SZ, subdir=SQLITE_DIR)
+
+        pc_test.main(gib=SQLITE_SZ, subdir=SQLITE_DIR)
+        pc_test.main(sqlite=True, gib=SQLITE_SZ, subdir=SQLITE_DIR)
 
 
 def get_args():
@@ -53,7 +66,7 @@ def get_args():
         "-n", "--net_test", dest="net_test", action="store_true", default=False
     )
     arg_parser.add_argument(
-        "-a", "--append_test", dest="append_test", action="store_true", default=False
+        "-s", "--sqlite", dest="sqlite_tests", action="store_true", default=False
     )
 
     return arg_parser.parse_args()

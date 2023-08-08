@@ -4,7 +4,9 @@ cmake -DCMAKE_BUILD_TYPE=Release -S . -B cmake-build-release -DCMAKE_VERBOSE_MAK
 cmake --build cmake-build-release \
 --config release \
 --target \
+write_test_sqlite \
 write_test \
 fral_ext \
+pc_test_sqlite \
 pc_test -j 4
 mv cmake-build-release/fral/python/*.so fral/python/fral

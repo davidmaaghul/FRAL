@@ -36,9 +36,6 @@ class FRAL(object):
     def max_size(self):
         return self._ral.max_size()
 
-    def memory(self):
-        return self._ral.memory()
-
     def max_memory(self):
         return self._ral.max_memory()
 

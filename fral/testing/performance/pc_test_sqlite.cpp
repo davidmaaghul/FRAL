@@ -8,7 +8,7 @@
 
 using namespace std::chrono;
 
-DEFINE_int32(gib, 1, "Provide number of MB to test");
+DEFINE_double(gib, 1, "Provide number of GB to test");
 DEFINE_int32(size, 100, "Enter size of entries");
 DEFINE_int32(writers, 1, "Enter number of writers");
 DEFINE_string(bin_name, "pc-test2.db", "Provide bin name");
@@ -17,7 +17,7 @@ DEFINE_string(csv_name, "pc-test2.csv", "Provide csv name for test results");
 int main(int argc, char **argv) {
     gflags::ParseCommandLineFlags(&argc, &argv, false);
     FRAL_SQLITE(FLAGS_bin_name.c_str(), true);
-    size_t totalSize = static_cast<size_t>(FLAGS_gib) * 1000000;
+    auto totalSize = static_cast<size_t>(FLAGS_gib * 1000000000);
     auto entries = totalSize / FLAGS_size;
 
     assert(entries % FLAGS_writers == 0);
