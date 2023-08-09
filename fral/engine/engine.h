@@ -5,9 +5,9 @@
 
 #include <boost/interprocess/mapped_region.hpp>
 
-#define MEMORY_LOWER_BOUND (1ul << 60)
+#define MEMORY_LOWER_BOUND (1ul << 63)
 #define ENTRIES_LOWER_BOUND (1ul << 31)
-#define MAX_ALLOCATION (1ul << 40)
+#define MAX_ALLOCATION (1ul << 43)
 #define MAX_CLIENTS (1ul << 20)
 
 // assert atomic is address free for architecture
