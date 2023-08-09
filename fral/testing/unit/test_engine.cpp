@@ -118,6 +118,9 @@ TEST_F(FRALTest, TEST_ALLOCATE_APPEND_READ_STRUCT){
 }
 
 int main(int argc, char** argv){
+    unsigned long int maxValue = std::numeric_limits<unsigned long int>::max();
+    std::cout << "The largest unsigned long int value is: " << maxValue << std::endl;
+
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
