@@ -8,6 +8,7 @@ To normalize virtual memory addressing, allocation offsets from the start of the
 stored in a fixed-sized array (see below).
 
 ![offset diagram](./misc/offsets.png)
+
 Experimental findings show that the FRAL engine allows for completion of the parallel
 production and consumption of log entries at a nanosecond scale. With two writers and a
 single reader, the C++ implementation showed to support writing and reading over five million
