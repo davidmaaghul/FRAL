@@ -93,7 +93,7 @@ jobs:
           CIBW_TEST_COMMAND: python -m pytest --rootdir={package} {package}
           CIBW_TEST_REQUIRES: pytest
           CIBW_ENVIRONMENT_WINDOWS: BOOST_ROOT='${{ steps.install-boost.outputs.BOOST_ROOT }}'
-          CIBW_ENVIRONMENT_MACOS: BOOST_ROOT='${{ steps.install-boost.outputs.BOOST_ROOT }}'
+          CIBW_ENVIRONMENT_MACOS: BOOST_ROOT='${{ steps.install-macos.outputs.BOOST_ROOT }}' GTest_ROOT='${{ steps.install-macos.outputs.GTest_ROOT }}'
           CIBW_ENVIRONMENT_LINUX: BOOST_ROOT=/boost
           CIBW_ENVIRONMENT_PASS_LINUX: BOOST_ROOT
 
