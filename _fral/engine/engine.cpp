@@ -91,7 +91,7 @@ void *FRAL::allocate(size_t sz) {
   return currentAddress + sizeof(size_t *);
 }
 
-unsigned int FRAL::append(void *blob) {
+ssize_t FRAL::append(void *blob) {
   auto offset = (size_t)((char *)blob - (char *)map);
   size_t empty_idx = EMPTY_IDX;
 

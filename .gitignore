@@ -6,4 +6,8 @@ cmake-*
 **/*.bin
 **/notebooks
 **/*.db
-
+**/*.egg-info
+**/_skbuild
+**/dist
+**/*.whl
+**/build

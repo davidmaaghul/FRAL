@@ -2,7 +2,7 @@ import struct
 import subprocess
 import os
 
-from fral.python.fral.fral import FRAL
+from fral import FRAL
 
 BIN_NAME = "demo.bin"
 

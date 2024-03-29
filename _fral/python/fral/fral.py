@@ -1,5 +1,5 @@
 import os
-import fral.python.fral.fral_ext as fral_cpp
+import fral.fral_ext as fral_cpp
 from typing import Optional
 
 

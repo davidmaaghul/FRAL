@@ -4,7 +4,7 @@ import pandas as pd
 
 from unittest import TestCase
 from unittest.mock import patch
-from fral.python.fral.fral import FRAL
+from _fral.python.fral.fral import FRAL
 import pickle
 
 
@@ -28,7 +28,7 @@ class Test(TestCase):
 
     def test_prime_cache(self):
         with tempfile.TemporaryDirectory() as tmp:
-            with patch("fral.python.fral.fral.fral_cpp") as test_fral_cpp:
+            with patch("_fral.python.fral.fral.fral_cpp") as test_fral_cpp:
                 fname = os.path.join(tmp, "test.bin")
                 test = FRAL(fname, 1000, 100)
                 test.prime_cache()

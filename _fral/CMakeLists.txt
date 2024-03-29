@@ -1,5 +1,5 @@
 add_subdirectory(engine)
-add_subdirectory(network)
+#add_subdirectory(network)
 add_subdirectory(python)
 add_subdirectory(testing)
 add_subdirectory(examples)
