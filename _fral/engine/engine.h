@@ -40,7 +40,7 @@ public:
 
   virtual void* allocate(size_t sz);
 
-  unsigned int append(void* blob);
+  ssize_t append(void* blob);
 
   void* load(unsigned int idx) const;
 

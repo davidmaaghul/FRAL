@@ -1,6 +1,6 @@
 #include <nanobind/nanobind.h>
 
-#include "../engine/engine.h"
+#include "../../engine/engine.h"
 #include "Python.h"
 
 namespace nb = nanobind;

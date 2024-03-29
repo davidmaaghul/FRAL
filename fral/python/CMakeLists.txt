@@ -1,2 +1,0 @@
-nanobind_add_module(fral_ext fral_ext.cpp)
-target_link_libraries(fral_ext PRIVATE fral_engine)
