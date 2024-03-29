@@ -26,7 +26,7 @@ find_package(nanobind CONFIG REQUIRED)
 
 
 find_package(Boost COMPONENTS system filesystem program_options regex timer chrono REQUIRED)
-find_package(gflags REQUIRED)
+#find_package(gflags REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS})
 
