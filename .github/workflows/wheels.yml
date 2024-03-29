@@ -68,7 +68,7 @@ jobs:
         id: install-macos
         if: runner.os == 'macOS'
         run: |
-          brew install boost gflags
+          brew install boost gflags gtest
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.3.1
