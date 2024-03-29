@@ -25,8 +25,8 @@ list(APPEND CMAKE_PREFIX_PATH "${NB_DIR}")
 find_package(nanobind CONFIG REQUIRED)
 
 
-find_package(Boost 1.57.0 COMPONENTS system filesystem program_options regex timer chrono REQUIRED)
-find_package(gflags 2.2.2 REQUIRED)
+find_package(Boost COMPONENTS system filesystem program_options regex timer chrono REQUIRED)
+find_package(gflags REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS})
 
