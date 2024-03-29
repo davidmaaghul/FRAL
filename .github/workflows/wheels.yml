@@ -74,6 +74,11 @@ jobs:
           choco install boost gflags
 
       - uses: pypa/cibuildwheel@v2.17
+        with:
+          CIBW_ENVIRONMENT: >-
+            ${{ matrix.os == 'ubuntu-latest' && 'BOOST_ROOT=/usr' ||
+               matrix.os == 'macos-latest' && 'BOOST_ROOT=/usr/local' ||
+               matrix.os == 'windows-latest' && 'BOOST_ROOT=C:\\path\\to\\boost' }}
 
       - name: Verify clean directory
         run: git diff --exit-code
