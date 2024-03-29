@@ -64,6 +64,7 @@ jobs:
           sudo apt-get install -y libboost-all-dev libgflags-dev
 
       - name: Install dependencies (macOS)
+        id: install-boost
         if: runner.os == 'macOS'
         run: |
           brew install boost gflags
@@ -73,12 +74,28 @@ jobs:
         run: |
           choco install boost gflags
 
-      - uses: pypa/cibuildwheel@v2.17
-        with:
-          CIBW_ENVIRONMENT: >-
-            ${{ matrix.os == 'ubuntu-latest' && 'BOOST_ROOT=/usr' ||
-               matrix.os == 'macos-latest' && 'BOOST_ROOT=/usr/local' ||
-               matrix.os == 'windows-latest' && 'BOOST_ROOT=C:\\path\\to\\boost' }}
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.3.1
+        env:
+          # Specify which Python versions to build wheels
+          # https://cibuildwheel.readthedocs.io/en/stable/options/#build-skip
+          CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-*"
+          # Skip 32 bit architectures, musllinux, and i686
+          CIBW_SKIP: "*-win32 *-musllinux_x86_64 *_i686"
+          CIBW_BEFORE_BUILD: python -m pip install cmake
+          CIBW_BEFORE_BUILD_LINUX: echo $BOOST_ROOT
+          CIBW_BEFORE_ALL_LINUX: >
+            yum install -y wget &&
+            cd / &&  mkdir boost && cd boost &&
+            wget --no-check-certificate 'https://sourceforge.net/projects/boost/files/boost/1.76.0/boost_1_76_0.tar.bz2' && 
+            tar xf boost_1_76_0.tar.bz2 &&
+            cd {package}
+          CIBW_TEST_COMMAND: python -m pytest --rootdir={package} {package}
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_ENVIRONMENT_WINDOWS: BOOST_ROOT='${{ steps.install-boost.outputs.BOOST_ROOT }}'
+          CIBW_ENVIRONMENT_MACOS: BOOST_ROOT='${{ steps.install-boost.outputs.BOOST_ROOT }}'
+          CIBW_ENVIRONMENT_LINUX: BOOST_ROOT=/boost
+          CIBW_ENVIRONMENT_PASS_LINUX: BOOST_ROOT
 
       - name: Verify clean directory
         run: git diff --exit-code
