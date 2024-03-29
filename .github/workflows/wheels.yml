@@ -57,6 +57,22 @@ jobs:
         with:
           submodules: true
 
+      - name: Install dependencies (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libboost-all-dev libgflags-dev
+
+      - name: Install dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install boost gflags
+
+      - name: Install dependencies (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          choco install boost gflags
+
       - uses: pypa/cibuildwheel@v2.17
 
       - name: Verify clean directory
