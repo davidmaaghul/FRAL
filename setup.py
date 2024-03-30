@@ -9,4 +9,3 @@ setup(
     package_dir={"fral": "_fral/python/fral"},
     cmake_install_dir="_fral/python/"
 )
-
