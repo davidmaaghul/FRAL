@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-10.12, macos-10.14]
+        os: [macos-10.12, macos-10.14, linux-latest]
 
     steps:
       - uses: actions/checkout@v4
@@ -49,6 +49,7 @@ jobs:
         uses: pypa/cibuildwheel@v2.3.1
         env:
           CIBW_BEFORE_BUILD_MACOS: brew install boost googletest gflags
+          CIBW_BEFORE_BUILD_LINUX: apt-get install -y libboost-all-dev libgflags-dev libgtest-dev
 
       - name: Verify clean directory
         run: git diff --exit-code
