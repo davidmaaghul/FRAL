@@ -1,5 +1,6 @@
 from skbuild import setup
 
+
 setup(
     name="fral",
     version="0.0.1",
