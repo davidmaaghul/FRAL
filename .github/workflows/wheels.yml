@@ -50,7 +50,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-10.14]
+        os: [macos-14, macos-12]
 
     steps:
       - uses: actions/checkout@v4
@@ -73,14 +73,6 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.3.1
         env:
-          # Specify which Python versions to build wheels
-          # https://cibuildwheel.readthedocs.io/en/stable/options/#build-skip
-          CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-*"
-          # Skip 32 bit architectures, musllinux, and i686
-          CIBW_SKIP: "*-win32 *-musllinux_x86_64 *_i686"
-          CIBW_BEFORE_BUILD: python -m pip install cmake
-          CIBW_TEST_COMMAND: python -m pytest --rootdir={package} {package}
-          CIBW_TEST_REQUIRES: pytest
           CIBW_ENVIRONMENT_WINDOWS: BOOST_ROOT='${{ steps.install-windows.outputs.BOOST_ROOT }}'
           CIBW_ENVIRONMENT_MACOS: BOOST_ROOT='${{ steps.install-macos.outputs.BOOST_ROOT }}' GTest_ROOT='${{ steps.install-macos.outputs.GTest_ROOT }}'
           CIBW_ENVIRONMENT_LINUX: BOOST_ROOT='${{ steps.install-linux.outputs.BOOST_ROOT }}'
