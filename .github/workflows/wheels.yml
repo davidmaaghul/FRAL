@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libboost-all-dev libgflags-dev googletest
+          sudo apt-get install -y libboost-all-dev libgflags-dev
 
       - name: Build SDist
         run: pipx run build --sdist
@@ -50,7 +50,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest]
+        os: [macos-10.14]
 
     steps:
       - uses: actions/checkout@v4
@@ -68,7 +68,7 @@ jobs:
         id: install-macos
         if: runner.os == 'macOS'
         run: |
-          brew install boost gflags
+          brew install boost gflags googletest
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.3.1
