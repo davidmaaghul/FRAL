@@ -55,6 +55,7 @@ jobs:
           activate-environment: fral
 
       - name: Build wheels
+        CIBW_BEFORE_BUILD_MACOS: brew install boost GTest gflags
         uses: pypa/cibuildwheel@v2.3.1
 
       - name: Verify clean directory
