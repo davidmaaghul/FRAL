@@ -19,19 +19,6 @@ jobs:
         with:
           submodules: true
 
-      - name: Set up Miniconda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          auto-update-conda: true
-          python-version: 3.10.0
-          environment-file: conda.yml
-          activate-environment: fral
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libboost-all-dev libgflags-dev
-
       - name: Build SDist
         run: pipx run build --sdist
 
@@ -57,25 +44,16 @@ jobs:
         with:
           submodules: true
 
-      - name: Install dependencies (Ubuntu)
-        id: install-linux
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libboost-all-dev libgflags-dev
-
-      - name: Install dependencies (macOS)
-        id: install-macos
-        if: runner.os == 'macOS'
-        run: |
-          brew install boost gflags googletest
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          python-version: 3.10.0
+          environment-file: conda.yml
+          activate-environment: fral
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.3.1
-        env:
-          CIBW_ENVIRONMENT_WINDOWS: BOOST_ROOT='${{ steps.install-windows.outputs.BOOST_ROOT }}'
-          CIBW_ENVIRONMENT_MACOS: BOOST_ROOT='${{ steps.install-macos.outputs.BOOST_ROOT }}' GTest_ROOT='${{ steps.install-macos.outputs.GTest_ROOT }}'
-          CIBW_ENVIRONMENT_LINUX: BOOST_ROOT='${{ steps.install-linux.outputs.BOOST_ROOT }}'
 
       - name: Verify clean directory
         run: git diff --exit-code
