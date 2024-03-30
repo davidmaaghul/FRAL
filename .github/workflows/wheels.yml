@@ -55,8 +55,12 @@ jobs:
           activate-environment: fral
 
       - name: Build wheels
-        CIBW_BEFORE_BUILD_MACOS: brew install boost GTest gflags
         uses: pypa/cibuildwheel@v2.3.1
+        env:
+          CIBW_BEFORE_BUILD_MACOS: >
+            pip install nanobind
+            pip install scikit-build
+            brew install boost GTest gflags
 
       - name: Verify clean directory
         run: git diff --exit-code
