@@ -52,7 +52,6 @@ jobs:
             pip install nanobind
             pip install scikit-build
             brew install boost
-            brew install googletest 
             brew install gflags
 
       - name: Verify clean directory
