@@ -1,3 +1,4 @@
+
 # Fast Random Access Log (FRAL)
 FRAL is a concurrency-friendly log structure allocated over shared memory. Reads are random access and writes
 are non-blocking. The current shared-memory framework uses memory-mapped files. The core engine is written in C++ and 
@@ -17,6 +18,11 @@ written with SQLite.
 
 For more detail on the implementation and performance, see [this presentation](./misc/FRAL.pdf).
 
+### Install with Pip 
+Currently supported for Python 3.10-12 on Darwin (ARM only), Windows and Linux:
+```bash
+pip install fral
+```
 
 ## Example Usage
 The following simple usage is shown using two processes in parallel. Both the C++ and Python examples 

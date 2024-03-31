@@ -4,15 +4,15 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "fral"
-version = "0.0.1"
+version = "1.0.0"
 description = "Fast Random Access Log"
-readme = "README.md"
-requires-python = ">=3.8"
+readme = "pyREADME.md"
+requires-python = ">=3.10"
 authors = [
-    { name = "David Maaghul", email = "test@xyz.com" },
+    { name = "David Maaghul", email = "dmaaghul95@gmail.com" },
 ]
 classifiers = [
-    "License :: MIT",
+    "License :: OSI Approved :: MIT License",
 ]
 
 [project.urls]
